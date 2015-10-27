@@ -215,6 +215,9 @@ module.exports = function(grunt) {
             },
             demo: {
                 url: 'http://localhost:8000/dist/demo/bionlp-st-ge/demo-cdn.html'
+            },
+            l2n: {
+                url: 'http://localhost:8000/dist/textae.html?mode=edit'
             }
         },
     });
@@ -223,4 +226,5 @@ module.exports = function(grunt) {
     grunt.registerTask('dist', ['eslint', 'jasmine_node', 'clean', 'browserify:dist', 'less', 'concat', 'uglify', 'copy', 'replace:version', 'cssmin']);
     grunt.registerTask('demo', ['open:demo', 'connect:developmentServer:keepalive']);
     grunt.registerTask('app', ['open:app', 'connect:developmentServer:keepalive']);
+    grunt.registerTask('buildandserve', ['clean', 'browserify:dist', 'less', 'concat', 'uglify', 'copy', 'replace:version', 'cssmin', 'open:l2n', 'connect:developmentServer:keepalive'])
 };

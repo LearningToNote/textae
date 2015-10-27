@@ -35,6 +35,12 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
         toastr.error("Could not load the target.")
       })
     },
+    getAnnotationFromDatabase = function(entryIdentifier) {
+        api.emit('load', {
+          annotation: {"text": "Hello World!"},
+          source: "My Computer"
+        })
+    },
     // load/saveDialog
     loadSaveDialog = function() {
       var extendOpenWithUrl = function($dialog) {
@@ -55,7 +61,8 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
         getDialog = _.compose(extendOpenWithUrl, bindCloseEvent, new GetEditorDialog(editor)),
         label = {
           URL: 'URL',
-          LOCAL: 'Local'
+          LOCAL: 'Local',
+          HANA: 'HANA'
         },
         getLoadDialog = function(editorId) {
           var getAnnotationFromFile = function(file) {
@@ -80,6 +87,7 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
             },
             $buttonUrl = new OpenButton('url'),
             $buttonLocal = new OpenButton('local'),
+            $buttonHANA = new OpenButton('hana'),
             $content = $('<div>')
             .append(
               new RowDiv().append(
@@ -113,6 +121,21 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
                 getAnnotationFromFile($content.find('[type="file"]')[0])
               }
 
+              $content.trigger('dialog.close')
+            })
+            .append(
+              new RowDiv().append(
+                new RowLabel(label.HANA),
+                $('<select name="test"><option value="-1"></option><option value="1">1</option><option value="2">2</option></select>'),
+                $buttonHANA
+              )
+            )
+            .on('change', function() {
+              console.log("value: " + $('select[name="test"]').find(':selected').val())
+              jQuerySugar.enabled($buttonHANA, $('select[name="test"]').find(':selected').val() !== '-1')
+            })
+            .on('click', '[type="button"].hana', function() {
+              getAnnotationFromDatabase($('select[name="test"]').find(':selected').val())
               $content.trigger('dialog.close')
             })
 
