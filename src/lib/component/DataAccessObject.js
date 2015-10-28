@@ -36,10 +36,12 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
       })
     },
     getAnnotationFromDatabase = function(entryIdentifier) {
+      $.get('http://127.0.0.1:8080/documents/' + entryIdentifier, function(data) {
         api.emit('load', {
-          annotation: {"text": "Hello World!"},
-          source: "My Computer"
+          annotation: {"text": data},
+          source: "Database"
         })
+      })
     },
     // load/saveDialog
     loadSaveDialog = function() {
@@ -126,18 +128,27 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
             .append(
               new RowDiv().append(
                 new RowLabel(label.HANA),
-                $('<select name="test"><option value="-1"></option><option value="1">1</option><option value="2">2</option></select>'),
+                $('<select name="documents_selector"><option value="-1">Loading...</option></select>'),
                 $buttonHANA
               )
             )
             .on('change', function() {
-              console.log("value: " + $('select[name="test"]').find(':selected').val())
-              jQuerySugar.enabled($buttonHANA, $('select[name="test"]').find(':selected').val() !== '-1')
+              jQuerySugar.enabled($buttonHANA, $('select[name="documents_selector"]').find(':selected').val() !== '-1')
             })
             .on('click', '[type="button"].hana', function() {
-              getAnnotationFromDatabase($('select[name="test"]').find(':selected').val())
+              getAnnotationFromDatabase($('select[name="documents_selector"]').find(':selected').val())
               $content.trigger('dialog.close')
             })
+
+          $.get('http://127.0.0.1:8080/documents', function (documents){
+            $('select[name="documents_selector"]').find('option')
+                                                  .remove()
+                                                  .end()
+                                                  .append('<option value="-1"></option>')
+            for (var i = documents.length - 1; i >= 0; i--) {
+              $('select[name="documents_selector"]').append('<option value ="' + documents[i] + '">' + documents[i] + '</option>')
+            };
+          })
 
           // Capture the local variable by inner funcitons.
           var $dialog = getDialog('textae.dialog.load', 'Load Annotations', $content)
