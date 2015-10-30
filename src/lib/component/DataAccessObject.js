@@ -37,8 +37,9 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
     },
     getAnnotationFromDatabase = function(entryIdentifier) {
       $.get('http://127.0.0.1:8080/documents/' + entryIdentifier, function(data) {
+        console.log(data)
         api.emit('load', {
-          annotation: {"text": data},
+          annotation: data,
           source: "Database"
         })
       })
