@@ -64,7 +64,6 @@
     "url": "https://github.com/pubannotation/textae.git"
   },
   "scripts": {
-    "postinstall": "node_modules/bower/bin/bower install",
     "test": "grunt jasmine_node",
     "watch": "npm run watchify & grunt dev",
     "watchify": "watchify -d src/lib/jquery.textae.js -t babelify -o dev/bundle.js"
