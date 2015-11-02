@@ -186,6 +186,7 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
             RowDiv = _.partial(jQuerySugar.Div, 'textae-editor__save-dialog__row'),
             RowLabel = _.partial(jQuerySugar.Label, 'textae-editor__save-dialog__label'),
             $saveButton = new jQuerySugar.Button('Save', 'url'),
+            $saveToHanaButton = new jQuerySugar.Button('Save', 'hana'),
             $content = $('<div>')
             .append(
               new RowDiv().append(
@@ -216,6 +217,20 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
               api.emit('save')
               $content.trigger('dialog.close')
             })
+            .append(new RowDiv().append(
+                new RowLabel(label.HANA),
+                $('<input type="text" placeholder="If empty, original name will be used" class="textae-editor__save-dialog__hana-document-name hana">'),
+                $saveToHanaButton
+              )
+            )
+            .on('click', '[type="button"].hana', function() {
+              var docName = jQuerySugar.getValueFromText($content, 'hana');
+              if (docName.length < 1) {
+                docName = JSON.parse($dialog.params).sourceid
+              }
+              saveAnnotationToServer('http://localhost:8080/documents/' + docName + '/save', $dialog.params)
+              $content.trigger('dialog.close')
+            })
             .append(
               new RowDiv().append(
                 new RowLabel(),
@@ -229,6 +244,8 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
               $content.trigger('dialog.close')
               return false
             })
+
+          jQuerySugar.enabled($saveToHanaButton, true)
 
           var $dialog = getDialog('textae.dialog.save', 'Save Annotations', $content)
 
