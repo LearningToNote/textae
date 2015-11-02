@@ -139,6 +139,14 @@ module.exports = function(grunt) {
                 tasks: ['less']
             }
         },
+        shell: {
+            server: {
+                options: {
+                    stdout: true
+                },
+                command: 'python server/server.py ../dist'
+            }
+        },
         connect: {
             developmentServer: {
                 options: {
@@ -208,16 +216,16 @@ module.exports = function(grunt) {
         },
         open: {
             app: {
-                url: 'http://localhost:8000/dist/textae.html?mode=edit&target=../src/1_annotations.json'
+                url: 'http://localhost:8080/dist/textae.html?mode=edit&target=../src/1_annotations.json'
             },
             dev: {
-                url: 'http://localhost:8000/dev/development.html?config=1_config.json&target=1_annotations.json'
+                url: 'http://localhost:8080/dev/development.html?config=1_config.json&target=1_annotations.json'
             },
             demo: {
-                url: 'http://localhost:8000/dist/demo/bionlp-st-ge/demo-cdn.html'
+                url: 'http://localhost:8080/dist/demo/bionlp-st-ge/demo-cdn.html'
             },
             l2n: {
-                url: 'http://localhost:8000/dist/textae.html?mode=edit'
+                url: 'http://localhost:8080/dist/textae.html?mode=edit'
             }
         },
     });
@@ -226,5 +234,5 @@ module.exports = function(grunt) {
     grunt.registerTask('dist', ['eslint', 'jasmine_node', 'clean', 'browserify:dist', 'less', 'concat', 'uglify', 'copy', 'replace:version', 'cssmin']);
     grunt.registerTask('demo', ['open:demo', 'connect:developmentServer:keepalive']);
     grunt.registerTask('app', ['open:app', 'connect:developmentServer:keepalive']);
-    grunt.registerTask('buildandserve', ['clean', 'browserify:dist', 'less', 'concat', 'uglify', 'copy', 'replace:version', 'cssmin', 'open:l2n', 'connect:developmentServer:keepalive'])
+    grunt.registerTask('buildandserve', ['clean', 'browserify:dist', 'less', 'concat', 'uglify', 'copy', 'replace:version', 'cssmin', 'open:l2n', 'shell:server'])
 };
