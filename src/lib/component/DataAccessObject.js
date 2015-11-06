@@ -142,10 +142,14 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
             })
 
           $.get('http://127.0.0.1:8080/documents', function (documents){
+            var first_option = 'Please select a document'
+            if (typeof documents === 'undefined' || documents.length == 0) {
+              first_option = 'No documents available'
+            }
             $('select[name="documents_selector"]').find('option')
                                                   .remove()
                                                   .end()
-                                                  .append('<option value="-1"></option>')
+                                                  .append('<option value="-1">' + first_option + '</option>')
             for (var i = documents.length - 1; i >= 0; i--) {
               $('select[name="documents_selector"]').append('<option value ="' + documents[i] + '">' + documents[i] + '</option>')
             };
