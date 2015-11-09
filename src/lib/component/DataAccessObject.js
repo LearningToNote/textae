@@ -37,7 +37,6 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
     },
     getAnnotationFromDatabase = function(entryIdentifier) {
       $.get('http://127.0.0.1:8080/documents/' + entryIdentifier, function(data) {
-        console.log(data)
         api.emit('load', {
           annotation: data,
           source: "Database"
@@ -232,7 +231,7 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
               if (docName.length < 1) {
                 docName = JSON.parse($dialog.params).sourceid
               }
-              saveAnnotationToServer('http://localhost:8080/documents/' + docName + '/save', $dialog.params)
+              saveAnnotationToServer('http://localhost:8080/documents/' + docName, $dialog.params)
               $content.trigger('dialog.close')
             })
             .append(

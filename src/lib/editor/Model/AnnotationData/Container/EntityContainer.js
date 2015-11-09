@@ -7,6 +7,7 @@ var toModel = function(editor, entity) {
       id: entity.id,
       span: idFactory.makeSpanId(editor, entity.span),
       type: entity.obj,
+      originalId: entity.originalId
     }
   },
   mappingFunction = function(editor, denotations) {
