@@ -36,7 +36,7 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
       })
     },
     getAnnotationFromDatabase = function(entryIdentifier) {
-      $.get('http://127.0.0.1:8080/documents/' + entryIdentifier, function(data) {
+      $.get('http://' + window.location.hostname + ':8080/documents/' + entryIdentifier, function(data) {
         api.emit('load', {
           annotation: data,
           source: "Database"
@@ -140,7 +140,7 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
               $content.trigger('dialog.close')
             })
 
-          $.get('http://127.0.0.1:8080/documents', function (documents){
+          $.get('http://' + window.location.hostname + ':8080/documents', function (documents){
             var first_option = 'Please select a document'
             if (typeof documents === 'undefined' || documents.length == 0) {
               first_option = 'No documents available'
