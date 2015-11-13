@@ -231,7 +231,7 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
               if (docName.length < 1) {
                 docName = JSON.parse($dialog.params).sourceid
               }
-              saveAnnotationToServer('http://localhost:8080/documents/' + docName, $dialog.params)
+              saveAnnotationToServer('http://' + window.location.hostname + ':8080/documents/' + docName, $dialog.params)
               $content.trigger('dialog.close')
             })
             .append(
