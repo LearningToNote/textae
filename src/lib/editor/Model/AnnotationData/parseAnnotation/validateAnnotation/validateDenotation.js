@@ -18,8 +18,15 @@ export default function(text, paragraph, denotations) {
     ),
     resultIsNotCrossing = validate(
       resultInParagraph.accept, (denotation, opt, index, array) => {
-        let others = array.slice(0, index).map(d => d.span),
-          isInvalid = isBoundaryCrossingWithOtherSpans(others, denotation.span)
+        let others = array.slice(0, index).map(d => d.span)
+        let flattenedOthers = [].concat.apply([], others)
+        var isInvalid = false
+        for (var i = denotation.span.length - 1; i >= 0; i--) {
+          if (isBoundaryCrossingWithOtherSpans(flattenedOthers, denotation.span[i])) {
+            isInvalid = true
+            break
+          }
+        }
 
         return !isInvalid
       }
@@ -42,7 +49,8 @@ export default function(text, paragraph, denotations) {
 }
 
 function hasLength(denotation) {
-  return denotation.span.end - denotation.span.begin > 0
+  return denotation.span.length > 0 &&
+          denotation.span[denotation.span.length - 1].end - denotation.span[0].begin > 0
 }
 
 function isInText(boundary, text) {
@@ -50,8 +58,8 @@ function isInText(boundary, text) {
 }
 
 function isBeginAndEndIn(denotation, text) {
-  return isInText(denotation.span.begin, text) &&
-    isInText(denotation.span.end, text)
+  return isInText(denotation.span[0].begin, text) &&
+    isInText(denotation.span[denotation.span.length - 1].end, text)
 }
 
 function isInParagraph(denotation, paragraph) {
