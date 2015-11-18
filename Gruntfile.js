@@ -234,5 +234,6 @@ module.exports = function(grunt) {
     grunt.registerTask('dist', ['eslint', 'jasmine_node', 'clean', 'browserify:dist', 'less', 'concat', 'uglify', 'copy', 'replace:version', 'cssmin']);
     grunt.registerTask('demo', ['open:demo', 'connect:developmentServer:keepalive']);
     grunt.registerTask('app', ['open:app', 'connect:developmentServer:keepalive']);
-    grunt.registerTask('buildandserve', ['clean', 'browserify:dist', 'less', 'concat', 'uglify', 'copy', 'replace:version', 'cssmin', 'open:l2n', 'shell:server'])
+    grunt.registerTask('build', ['clean', 'browserify:dist', 'less', 'concat', 'uglify', 'copy', 'replace:version', 'cssmin'])
+    grunt.registerTask('buildandserve', ['build', 'open:l2n', 'shell:server'])
 };
