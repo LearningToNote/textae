@@ -180,7 +180,7 @@ module.exports = function(grunt) {
                                 if (user !== 'Jin-Dong Kim' || pass !== 'passpass') {
                                     return unauthorized(res);
                                 } else {
-                                    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+                                    res.setHeader('Access-Control-Allow-Origin', 'https://localhost:8000');
                                     res.setHeader('Access-Control-Allow-Credentials', 'true');
                                     next();
                                 }
@@ -216,16 +216,16 @@ module.exports = function(grunt) {
         },
         open: {
             app: {
-                url: 'http://localhost:8080/dist/textae.html?mode=edit&target=../src/1_annotations.json'
+                url: 'https://localhost:8080/dist/textae.html?mode=edit&target=../src/1_annotations.json'
             },
             dev: {
-                url: 'http://localhost:8080/dev/development.html?config=1_config.json&target=1_annotations.json'
+                url: 'https://localhost:8080/dev/development.html?config=1_config.json&target=1_annotations.json'
             },
             demo: {
-                url: 'http://localhost:8080/dist/demo/bionlp-st-ge/demo-cdn.html'
+                url: 'https://localhost:8080/dist/demo/bionlp-st-ge/demo-cdn.html'
             },
             l2n: {
-                url: 'http://localhost:8080/dist/textae.html?mode=edit'
+                url: 'https://localhost:8080/dist/textae.html?mode=edit'
             }
         },
     });
