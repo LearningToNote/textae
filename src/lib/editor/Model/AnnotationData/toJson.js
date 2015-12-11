@@ -13,7 +13,8 @@ var toDenotation = function(dataStore) {
             end: currentSpan.end
           },
           obj: entity.type,
-          originalId: entity.originalId
+          originalId: entity.originalId,
+          userId: entity.userId
         }
       })
   },
