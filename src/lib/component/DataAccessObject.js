@@ -275,6 +275,7 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
 
   var api = _.extend(new EventEmitter(), {
     getAnnotationFromServer: getAnnotationFromServer,
+    getAnnotationFromDatabase: getAnnotationFromDatabase,
     showAccess: _.partial(loadSaveDialog.showLoad, editor.editorId),
     showSave: _.partial(loadSaveDialog.showSave, editor.editorId),
   })

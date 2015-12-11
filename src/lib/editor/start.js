@@ -71,6 +71,8 @@ function loadAnnotation(spanConfig, typeContainer, annotationData, statusBar, pa
     } else if (annotation.url) {
       // Load an annotation from server.
       dataAccessObject.getAnnotationFromServer(annotation.url)
+    } else if (params["hana-document"]) {
+      dataAccessObject.getAnnotationFromDatabase(params["hana-document"])
     }
   }
 }
