@@ -35,7 +35,7 @@ module.exports = function(grunt) {
                     'src/lib/bundle.js',
                     'src/lib/main.js',
                 ],
-                dest: 'dist/lib/<%= pkg.name %>-<%= pkg.version %>.js',
+                dest: 'dist/textae/lib/<%= pkg.name %>-<%= pkg.version %>.js',
             },
             css: {
                 src: [
@@ -45,7 +45,7 @@ module.exports = function(grunt) {
                     'src/lib/css/textae-editor-dialog.css',
                     'src/lib/css/textae-editor-type-pallet.css'
                 ],
-                dest: 'dist/lib/css/<%= pkg.name %>-<%= pkg.version %>.css',
+                dest: 'dist/textae/lib/css/<%= pkg.name %>-<%= pkg.version %>.css',
             }
         },
         uglify: {
@@ -54,16 +54,16 @@ module.exports = function(grunt) {
             },
             dist: {
                 files: {
-                    'dist/lib/<%= pkg.name %>-<%= pkg.version %>.min.js': ['<%= concat.js.dest %>']
+                    'dist/textae/lib/<%= pkg.name %>-<%= pkg.version %>.min.js': ['<%= concat.js.dest %>']
                 }
             }
         },
         cssmin: {
             minify: {
                 expand: true,
-                cwd: 'dist/lib/css/',
+                cwd: 'dist/textae/lib/css/',
                 src: ['<%= pkg.name %>-<%= pkg.version %>.css'],
-                dest: 'dist/lib/css/',
+                dest: 'dist/textae/lib/css/',
                 rename: rename.ext(".min.css")
             }
         },
@@ -73,26 +73,26 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: 'src/',
                     src: ['demo/**', 'lib/css/images/**', '!**/*.psd'],
-                    dest: 'dist/',
+                    dest: 'dist/textae',
                     filter: 'isFile'
                 }, {
                     expand: true,
                     cwd: 'dev/vender',
                     src: ['images/*', 'jquery/dist/jquery.min.*', 'toastr/toastr.min.*', 'underscore/underscore-min.*', 'jquery-ui.min.*', 'jquery.jsPlumb-1.5.2-min.js'],
-                    dest: 'dist/vender',
+                    dest: 'dist/textae/vender',
                     filter: 'isFile'
                 }, {
                     expand: true,
                     cwd: 'src/app',
                     src: ['textae.*'],
-                    dest: 'dist/',
+                    dest: 'dist/textae/',
                     filter: 'isFile'
                 }]
             },
         },
         replace: {
             version: {
-                src: ['dist/textae.html', 'dist/demo/bionlp-st-ge/*.html'],
+                src: ['dist/textae/textae.html', 'dist/textae/demo/bionlp-st-ge/*.html'],
                 overwrite: true,
                 replacements: [{
                     from: '{{version}}',
@@ -216,16 +216,16 @@ module.exports = function(grunt) {
         },
         open: {
             app: {
-                url: 'https://localhost:8080/dist/textae.html?mode=edit&target=../src/1_annotations.json'
+                url: 'https://localhost:8080/dist/textae/textae.html?mode=edit&target=../src/1_annotations.json'
             },
             dev: {
                 url: 'https://localhost:8080/dev/development.html?config=1_config.json&target=1_annotations.json'
             },
             demo: {
-                url: 'https://localhost:8080/dist/demo/bionlp-st-ge/demo-cdn.html'
+                url: 'https://localhost:8080/dist/textae/demo/bionlp-st-ge/demo-cdn.html'
             },
             l2n: {
-                url: 'https://localhost:8080/dist/textae.html?mode=edit'
+                url: 'https://localhost:8080/dist/textae/textae.html?mode=edit'
             }
         },
     });
