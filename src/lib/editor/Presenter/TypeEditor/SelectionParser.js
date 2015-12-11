@@ -7,7 +7,7 @@ module.exports = function(editor, model) {
 
       var positions = selectPosition.toPositions(model.annotationData, selection),
         selectedString = model.annotationData.sourceDoc.substring(positions.anchorPosition, positions.focusPosition),
-        stringWithoutBlankCharacters = spanConfig.removeBlankChractors(selectedString)
+        stringWithoutBlankCharacters = spanConfig.removeBlankCharacters(selectedString)
 
       return stringWithoutBlankCharacters.length > 0
     },

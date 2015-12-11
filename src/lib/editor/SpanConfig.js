@@ -50,7 +50,7 @@ module.exports = function() {
     isBlankCharacter = function(char) {
       return blankCharacters.indexOf(char) >= 0
     },
-    removeBlankChractors = function(str) {
+    removeBlankCharacters = function(str) {
       blankCharacters.forEach(function(char) {
         str = str.replace(char, '')
       })
@@ -62,6 +62,6 @@ module.exports = function() {
     set: set,
     isDelimiter: isDelimiter,
     isBlankCharacter: isBlankCharacter,
-    removeBlankChractors: removeBlankChractors
+    removeBlankCharacters: removeBlankCharacters
   }
 }
