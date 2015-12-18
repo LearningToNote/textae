@@ -1,4 +1,4 @@
-import Pallet from '../../../component/Pallet'
+import SearchablePallet from '../../../component/SearchablePallet'
 import dismissBrowserSelection from './dismissBrowserSelection'
 import ElementEditor from './ElementEditor'
 
@@ -12,7 +12,7 @@ export default function(editor, model, spanConfig, command, modeAccordingToButto
       modeAccordingToButton,
       typeContainer, () => cancelSelect(pallet, model.selectionModel)
     ),
-    pallet = new Pallet(
+    pallet = new SearchablePallet(
       (label) => elementEditor.handler.changeTypeOfSelected(label), (label) => elementEditor.handler.typeContainer.setDefaultType(label)
     )
 
