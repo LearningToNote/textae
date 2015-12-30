@@ -2,7 +2,7 @@ import reduce2hash from '../../util/reduce2hash'
 import uri from '../uri'
 import EntityType from './EntityType.js'
 
-var DEFAULT_TYPE = EntityType({"name": "blubb", "code": "000", "groupID": "000", "group": "No Group"}),
+var DEFAULT_TYPE = EntityType({"name": "undefined", "code": "-1", "groupID": "-1", "group": "No Group"}),
   TypeContainer = function(getActualTypesFunction, defaultColor) {
     var definedTypes = {},
       defaultType = DEFAULT_TYPE
@@ -21,14 +21,14 @@ var DEFAULT_TYPE = EntityType({"name": "blubb", "code": "000", "groupID": "000",
         return defaultType || this.getSortedNames()[0]
       },
       getColor: function(code) {
-        console.log("trying to get the color of " + code)
-        console.log(definedTypes)
-        console.log(definedTypes[code])
+        // console.log("trying to get the color of " + code)
+        // console.log(definedTypes)
+        // console.log(definedTypes[code])
         return definedTypes[code] && definedTypes[code].color || defaultColor
       },
       getUri: function(code) {
-        console.log("trying to get the uri of " + code)
-        console.log(code)
+        // console.log("trying to get the uri of " + code)
+        // console.log(code)
         return definedTypes[code] && definedTypes[code].uri ||
           uri.getUrlMatches(code) ? code : undefined
       },
@@ -50,8 +50,12 @@ var DEFAULT_TYPE = EntityType({"name": "blubb", "code": "000", "groupID": "000",
               b < a ? -1 :
               0
           })
+          console.log("type names:")
+          console.log(typeNames)
+          console.log("definedTypes:")
+          console.log(definedTypes)
 
-          return typeNames
+          return typeNames.map(function(code) { if (code === "-1") { return DEFAULT_TYPE } else { return definedTypes[code] }})
         } else {
           return []
         }

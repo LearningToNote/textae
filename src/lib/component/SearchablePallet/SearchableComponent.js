@@ -1,4 +1,4 @@
-export default function(selectType, selectDefaultType) {
+export default function() {
   let $searchField = $('<input type="text" placeholder="Search..."/>')
   $searchField.on('change', function() {
     console.log('It changed!!')
@@ -10,20 +10,6 @@ export default function(selectType, selectDefaultType) {
     .append($searchField)
     .append($('<ul>'))
     .css('position', 'fixed')
-
-  $pallet.selectDefaultType = selectDefaultType
-  $pallet.selectType = selectType
-
-  // $pallet
-  //   .on('click', '.textae-editor__type-pallet__entity-type__label', function() {
-  //     $pallet.hide()
-  //     selectType($(this).attr('label'))
-  //   })
-  //   .on('change', '.textae-editor__type-pallet__entity-type__radio', function() {
-  //     $pallet.hide()
-  //     selectDefaultType($(this).attr('label'))
-  //   })
-  //   .hide()
 
   return $pallet
 }

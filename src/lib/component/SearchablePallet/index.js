@@ -1,8 +1,12 @@
 import SearchableComponent from './SearchableComponent'
 import Row from './Row'
 
+var typeSelection = {}
+
 export default function(selectType, selectDefaultType) {
-  let $pallet = new SearchableComponent(selectType, selectDefaultType)
+  let $pallet = new SearchableComponent()
+  typeSelection.selectType = selectType
+  typeSelection.selectDefaultType = selectDefaultType
 
   return {
     show: (typeContainer, point) => show($pallet, typeContainer, point),
@@ -60,8 +64,12 @@ function setupOnClickEvents($pallet) {
     })
   $pallet.find('.palletRowClassEntry')
     .on('click', function() {
+      console.log("Clicked on: ")
+      console.log($(this))
+      console.log("Selected type:")
+      console.log($(this).children('input').attr('label'))
+      typeSelection.selectType($(this).children('input').attr('label'))
       $pallet.hide()
-      $pallet.selectType($(this).attr('label'))
     })
 
 }
