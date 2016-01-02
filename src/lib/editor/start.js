@@ -4,7 +4,7 @@ import StatusBar from '../component/StatusBar'
 import getParams from './getParams'
 import SpanConfig from './SpanConfig'
 import Command from './Command'
-import TypeContainer from './TypeContainer'
+import GroupedTypeContainer from './GroupedTypeContainer'
 import View from './View'
 import Presenter from './Presenter'
 import bindMouseEvent from './bindMouseEvent'
@@ -17,7 +17,7 @@ export default function(editor, dataAccessObject, history, buttonController, mod
     // Users can edit model only via commands.
     command = new Command(editor, model, history),
     typeGap = new Observable(-1),
-    typeContainer = new TypeContainer(model),
+    typeContainer = new GroupedTypeContainer(model),
     view = new View(editor, model),
     presenter = new Presenter(
       editor,
