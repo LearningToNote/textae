@@ -22,6 +22,14 @@ var EntityType = function(data) {
         },
         toString: function() {
             return code
+        },
+        toJSON: function() {
+            return {
+                "name"   : name,
+                "code"   : code,
+                "group"  : group,
+                "groupId": groupId
+            }
         }
     }
 }

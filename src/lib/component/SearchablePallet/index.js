@@ -48,11 +48,11 @@ function appendRows(typeContainer, $pallet) {
      .append(new Row(typeContainer))
      .end()
 
-  setupOnClickEvents($pallet)
+  setupOnClickEvents(typeContainer, $pallet)
   return $pallet
 }
 
-function setupOnClickEvents($pallet) {
+function setupOnClickEvents(typeContainer, $pallet) {
   $pallet.find('.palletRowClassElement')
     .on('click', function() {
       if(!($(this).children('.palletRowClassEntryList').is(':visible'))){
@@ -64,11 +64,13 @@ function setupOnClickEvents($pallet) {
     })
   $pallet.find('.palletRowClassEntry')
     .on('click', function() {
+      var typeCode = $(this).children('input').attr('label')
       console.log("Clicked on: ")
       console.log($(this))
       console.log("Selected type:")
-      console.log($(this).children('input').attr('label'))
-      typeSelection.selectType($(this).children('input').attr('label'))
+      console.log(typeCode)
+      var type = typeContainer.getTypeForCode(typeCode)
+      typeSelection.selectType(type)
       $pallet.hide()
     })
 

@@ -32,6 +32,9 @@ var DEFAULT_TYPE = EntityType({"name": "undefined", "code": "-1", "groupID": "-1
         return definedTypes[code] && definedTypes[code].uri ||
           uri.getUrlMatches(code) ? code : undefined
       },
+      getTypeForCode: function(code) {
+        return definedTypes[code]
+      },
       getSortedNames: function() {
         if (getActualTypesFunction) {
           var typeCount = getActualTypesFunction()

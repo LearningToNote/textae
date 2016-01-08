@@ -8,7 +8,9 @@ import createEntityElement from './createEntityElement'
 // A grid is only shown when at least one entity is owned by a correspond span.
 export default function(editor, namspace, typeContainer, gridRenderer, modification, entity) {
   // Replace null to 'null' if type is null and undefined too.
-  entity.type = String(entity.type)
+  if (entity.type === undefined || entity.type === null) {
+    entity.type = String(entity.type)
+  }
 
   // Append a new entity to the type
   let $pane = getTypeElement(
