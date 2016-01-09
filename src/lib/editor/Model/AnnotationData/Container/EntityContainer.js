@@ -1,12 +1,13 @@
 import idFactory from '../../../idFactory'
 import ModelContainer from './ModelContainer'
+import EntityType from '../../../GroupedTypeContainer/EntityType'
 
 // Expected an entity like {id: "E21", span: "editor2__S50_54", type: "Protein"}.
 var toModel = function(editor, entity) {
     return {
       id: entity.id,
       span: idFactory.makeSpanId(editor, entity.span),
-      type: entity.obj,
+      type: new EntityType(entity.obj),
       originalId: entity.originalId,
       userId: entity.userId
     }

@@ -1,5 +1,6 @@
 
 var EntityType = function(data) {
+    //TODO: make it save to pass a string and use the string as type
     var name = data["name"],
         code = data["code"],
         group = data["group"],
@@ -34,9 +35,9 @@ var EntityType = function(data) {
     }
 }
 
-EntityType.prototype.toString = function() {
-    return $(this).code
-};
+// EntityType.prototype.toString = function() {
+//     return $(this).code
+// };
 
 module.exports = function(data) {
     return EntityType(data)
