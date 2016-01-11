@@ -1,10 +1,10 @@
 
 var EntityType = function(data) {
     //TODO: make it save to pass a string and use the string as type
-    var name = data["name"],
-        code = data["code"],
-        group = data["group"],
-        groupId = data["groupId"]
+    var name = data["name"] || "undefined",
+        code = data["code"] || -1,
+        group = data["group"] || "undefined",
+        groupId = data["groupId"] || -1
     return {
         getName: function() {
             return name
