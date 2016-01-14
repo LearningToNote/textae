@@ -1,5 +1,5 @@
 @acitveColor : #ffe;
-@baseColor: rgb(100, 100, 215);
+@baseColor: rgb(130, 220, 140);
 @border: fade(@baseColor, 80%);
 @selected: red;
 
@@ -33,7 +33,7 @@
         .active;
         .textae-editor__body__text-box__paragraph {
             background-color: fade(@acitveColor, 80%);
-            z-index: 2;
+            //z-index: 2;
         }
     }
     &_relation-mode.textae-editor--active {
@@ -42,6 +42,8 @@
     &__body {
         position: relative;
         &__text-box {
+            padding-left: 10px;
+            padding-right: 10px;
             /* prefer calculated line height */
             p {
                 line-height: inherit;
@@ -80,7 +82,7 @@
         }
     }
     &__span {
-        background-color: fade(@baseColor, 50%);
+        background-color: fade(@baseColor, 70%);
         border-color: @border;
         border-style: solid;
         border-width: 1px 0;
@@ -127,6 +129,7 @@
             border-radius: 4px;
             border-style: solid;
             border-width: 1px 0;
+            color: white;
             line-height: 16px;
             overflow: hidden;
             position: relative;
@@ -147,7 +150,7 @@
         pointer-events: none;
         text-decoration: none;
     }
-    &__type-label,
+    //&__type-label,
     &__entity,
     &_relation-mode &__type:hover &__entity,
     &_relation-mode &__type:hover &__type-label {

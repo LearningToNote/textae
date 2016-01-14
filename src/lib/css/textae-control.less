@@ -5,31 +5,31 @@
 }
 /* control */
 .textae-control {
-    background-color: #bbe;
+    background-color: #f6f6f6;
     /* fallback (Opera) */
-    background: #bbe;
+    background: #f6f6f6;
     /* Mozilla: */
-    background: -moz-linear-gradient(left, #BBBBEE, #FFFFFF);
+    background: -moz-linear-gradient(bottom, #f6f6f6, #fff);
     /* Chrome, Safari:*/
-    background: -webkit-gradient(linear, left top, right top, from(#BBBBEE), to(#FFFFFF));
+    background: -webkit-linear-gradient(#f6f6f6, #fff);
     /* MSIE */
-    filter:progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#BBBBEE', EndColorStr='#FFFFFF', GradientType=1);
-    border-left: 5px solid #558;
-    border-radius: 15px;
-    border-right: 5px solid #558;
-    box-shadow: 6px 6px 6px 6px rgba(0,0,0,0.4);
+    filter:progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#f6f6f6', EndColorStr='#fff', GradientType=0);
+    //border-left: 5px solid #558;
+    border-radius: 5px;
+    //border-right: 5px solid #558;
+    box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.4);
     display: inline-block;
     height: 28px;
     margin-left: 2px;
     padding: 0 20px 0 10px;
     position: relative;
-    z-index: 3;
+    z-index: 1000;
     /*== Elements inside the textae_control ==*/
     &__title {
         .left;
         margin-right: 10px;
         font-weight: bold;
-        text-shadow: 2px 2px 5px #555;
+        //text-shadow: 2px 2px 5px #555;
         font-size: 20px;
         vertical-align: bottom;
         a {

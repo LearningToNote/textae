@@ -87,7 +87,7 @@ function createCodeMapping(entities) {
 }
 
 module.exports = function(model) {
-  var entityContainer = _.extend(new TypeContainer(model.annotationData.entity.types, '#77DDDD'), {
+  var entityContainer = _.extend(new TypeContainer(model.annotationData.entity.types, '#197278'), {
       isBlock: function(type) {
         // console.log(type, entityContainer.getDeinedTypes(), entityContainer.getDeinedTypes()[type]);
         var definition = entityContainer.getDeinedTypes()[type]
