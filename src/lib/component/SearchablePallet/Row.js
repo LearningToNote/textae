@@ -32,19 +32,12 @@ function groupTypes(types) {
 }
 
 export default function(typeContainer) {
-  let test = typeContainer.getSortedNames()
-  console.log('hypetrain:')
-  console.log(test)
-
-  let groupedTypes = groupTypes(test)
-  console.log('grouped types:')
-  console.log(groupedTypes)
-
+  let types = typeContainer.getSortedNames()
+  let groupedTypes = groupTypes(types)
   var groups = []
 
   for (var groupId in groupedTypes) {
     if (groupedTypes.hasOwnProperty(groupId)) {
-      console.log("Checking groupId:" + groupId)
       var group = groupedTypes[groupId]
       var groupDict = {"groupName": group[0].getGroup()}
       groupDict["entries"] = group.map(type => {
