@@ -81,7 +81,7 @@ var DEFAULT_TYPE = EntityType({"name": "undefined", "code": "-1", "groupID": "-1
 
 function createCodeMapping(entities) {
   return entities.reduce(function(obj, element) {
-    obj[element.toString()] = element
+    obj[element.getCode()] = element
     return obj
   }, {})
 }

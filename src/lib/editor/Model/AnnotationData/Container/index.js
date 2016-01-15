@@ -6,6 +6,7 @@ import ModelContainer from './ModelContainer'
 import ParagraphContainer from './ParagraphContainer'
 import SpanContainer from './SpanContainer'
 import EntityContainer from './EntityContainer'
+import EntityType from '../../../GroupedTypeContainer/EntityType'
 
 export default function(editor) {
   let emitter = new EventEmitter(),
@@ -31,7 +32,7 @@ function mapRelations(relations) {
   return relations.map(r => {
     return {
       id: r.id,
-      type: r.pred,
+      type: EntityType(r.pred),
       subj: r.subj,
       obj: r.obj
     }
