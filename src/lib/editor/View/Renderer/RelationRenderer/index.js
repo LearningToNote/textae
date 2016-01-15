@@ -90,6 +90,10 @@ module.exports = function(editor, model, typeContainer) {
           return relation
         },
         createJsPlumbConnect = function(relation) {
+          var type = relation.type
+          if (type.getLabel !== undefined) {
+            type = type.getLabel()
+          }
           // Make a connect by jsPlumb.
           return jsPlumbInstance.connect({
             source: $(getEntityDom(editor[0], relation.subj)),
@@ -106,7 +110,7 @@ module.exports = function(editor, model, typeContainer) {
             overlays: [
               ['Arrow', jsPlumbArrowOverlayUtil.NORMAL_ARROW],
               ['Label', _.extend({}, LABEL, {
-                label: '[' + relation.id + '] ' + relation.type,
+                label: '[' + relation.id + '] ' + type,
                 cssClass: LABEL.cssClass + ' ' + modification.getClasses(relation.id).join(' ')
               })]
             ]
@@ -338,7 +342,11 @@ module.exports = function(editor, model, typeContainer) {
         }
         connect.setPaintStyle(strokeStyle)
 
-        new LabelOverlay(connect).setLabel('[' + relation.id + '] ' + relation.type)
+        var type = relation.type
+        if (type.getLabel !== undefined) {
+          type = type.getLabel()
+        }
+        new LabelOverlay(connect).setLabel('[' + relation.id + '] ' + type)
       }
     },
     changeJsModification = function(relation) {

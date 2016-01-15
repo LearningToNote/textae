@@ -57,7 +57,12 @@ function setLabelName(typeLabel, namespace, typeContainer, type) {
   } else if (match) {
     displayName = type.replace(match.prefix + ':', '')
   } else {
-    displayName = type
+    if (type.getLabel !== undefined) {
+      displayName = type.getLabel()
+    } else {
+      displayName = type
+    }
+
   }
 
   let child,
