@@ -21,6 +21,12 @@ export default function(editor, selectionModel, annotationData, command, typeCon
     },
     getSelectedIdEditable = selectionModel.relation.all,
     handler = {
+      changeLabelOfSelected: (newLabel) => changeTypeIfSelected(
+        command,
+        getSelectedIdEditable,
+        command.factory.relationChangeLabelCommand,
+        newLabel
+      ),
       changeTypeOfSelected: (newType) => changeTypeIfSelected(
         command,
         getSelectedIdEditable,

@@ -228,6 +228,7 @@ module.exports = function(editor, model, history) {
     relationCreateCommand: relationCreateAndSelectCommand,
     relationRemoveCommand: relationAndAssociatesRemoveCommand,
     relationChangeTypeCommand: (id, newType) => new ChangeTypeCommand(model, 'relation', id, newType),
+    relationChangeLabelCommand: (id, newLabel) => new ChangeLabelCommand(model, 'relation', id, newLabel),
     modificationCreateCommand: (modification) => new CreateCommand(model, 'modification', false, modification),
     modificationRemoveCommand: modificationRemoveCommand
   }
