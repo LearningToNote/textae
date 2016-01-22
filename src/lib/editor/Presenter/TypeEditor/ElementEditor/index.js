@@ -3,6 +3,7 @@ import EditEntity from './EditEntity'
 import unbindAllEventhandler from './unbindAllEventhandler'
 
 const DEFAULT_HANDLER = {
+  changeLabelOfSelected: null,
   changeTypeOfSelected: null,
   getSelectedIdEditable: returnEmptyArray,
   getSelectedType: null,

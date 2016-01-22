@@ -66,13 +66,30 @@ class ChangeTypeCommand extends Command {
   }
 }
 
+class ChangeLabelCommand extends Command {
+  constructor(model, modelType, id, newLabel) {
+    super(function() {
+      let oldLabel = model.annotationData[modelType].get(id).type.getLabel()
+
+      // Update model
+      let targetModel = model.annotationData[modelType].changeLabel(id, newLabel)
+
+      // Set revert
+      this.revert = () => new ChangeLabelCommand(model, modelType, id, oldLabel)
+
+      commandLog('change type of a ' + modelType + '. old label:' + oldLabel + ' ' + modelType + ':', targetModel)
+    })
+  }
+}
+
 let debugLog = commandLog
 
 export {
   debugLog,
   CreateCommand,
   RemoveCommand,
-  ChangeTypeCommand
+  ChangeTypeCommand,
+  ChangeLabelCommand
 }
 
 function selectNewModel(selectionModel, modelType, newModel) {

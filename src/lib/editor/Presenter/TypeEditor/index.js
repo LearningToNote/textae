@@ -29,6 +29,7 @@ export default function(editor, model, spanConfig, command, modeAccordingToButto
     },
     getTypeOfSelected: () => elementEditor.handler.getSelectedType(),
     changeTypeOfSelected: (newType) => elementEditor.handler.changeTypeOfSelected(newType),
+    changeLabelOfSelected: (newLabel) => elementEditor.handler.changeLabelOfSelected(newLabel),
     hideDialogs: function() {
       pallet.hide()
       var hidePalletEvent = new Event('hidePallet')

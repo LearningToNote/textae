@@ -22,7 +22,14 @@ export default function(editor, model, command, modeAccordingToButton, typeConta
     },
     getSelectedIdEditable = selectionModel.entity.all,
     handler = {
-      changeTypeOfSelected: (newType) => changeTypeIfSelected(
+      changeLabelOfSelected: (newLabel) => {
+        changeTypeIfSelected(
+        command,
+        getSelectedIdEditable,
+        (id, newLabel) => command.factory.entityChangeLabelCommand(id, newLabel),
+        newLabel
+      )},
+      changeTypeOfSelected: (newType) => { changeTypeIfSelected(
         command,
         getSelectedIdEditable, (id, newType) => command.factory.entityChangeTypeCommand(
           id,
@@ -30,7 +37,7 @@ export default function(editor, model, command, modeAccordingToButton, typeConta
           typeContainer.entity.isBlock(newType)
         ),
         newType
-      ),
+      )},
       getSelectedIdEditable: getSelectedIdEditable,
       getSelectedType: () => {
         let id = selectionModel.entity.single()

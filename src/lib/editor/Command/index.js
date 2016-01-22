@@ -1,5 +1,5 @@
 import {
-  CreateCommand, RemoveCommand, ChangeTypeCommand
+  CreateCommand, RemoveCommand, ChangeTypeCommand, ChangeLabelCommand
 }
 from './commandTemplate'
 
@@ -170,6 +170,15 @@ module.exports = function(editor, model, history) {
         }
       }
     },
+    entityChangeLabelCommand = function(id, newLabel) {
+      var changeLabelCommand = new ChangeLabelCommand(model, 'entity', id, newLabel)
+
+      return {
+        execute: function() {
+          executeCompositCommand('entity', this, 'change', id, [changeLabelCommand])
+        }
+      }
+    },
     spanMoveCommand = function(spanId, newSpan) {
       var subCommands = [],
         newSpanId = idFactory.makeSpanId(editor, newSpan),
@@ -215,6 +224,7 @@ module.exports = function(editor, model, history) {
     entityCreateCommand: entityCreateCommand,
     entityRemoveCommand: entityRemoveAndSpanRemeveIfNoEntityRestCommand,
     entityChangeTypeCommand: entityChangeTypeRemoveRelationCommand,
+    entityChangeLabelCommand: entityChangeLabelCommand,
     relationCreateCommand: relationCreateAndSelectCommand,
     relationRemoveCommand: relationAndAssociatesRemoveCommand,
     relationChangeTypeCommand: (id, newType) => new ChangeTypeCommand(model, 'relation', id, newType),

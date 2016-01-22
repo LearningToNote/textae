@@ -72,6 +72,13 @@ module.exports = function(emitter, prefix, mappingFunction, idPrefix) {
       emitter.emit(prefix + '.change', model)
       return model
     },
+    changeLabel: function(id, newLabel) {
+      var model = get(id)
+      model.type.setLabel(newLabel)
+      console.log("Emitting: " + prefix + '.change')
+      emitter.emit(prefix + '.change', model)
+      return model
+    },
     remove: function(id) {
       var model = contaier[id]
       if (model) {

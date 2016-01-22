@@ -21,6 +21,7 @@ var EntityType = function(data) {
     }
     return {
         getLabel: () => label,
+        setLabel: (newLabel) => label = newLabel,
         getName: function() {
             return name
         },
@@ -44,8 +45,8 @@ var EntityType = function(data) {
                 "name"   : name,
                 "code"   : code,
                 "group"  : group,
-                "groupId": groupId
-                //TODO: add label
+                "groupId": groupId,
+                "label": label
             }
         }
     }
