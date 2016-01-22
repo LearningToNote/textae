@@ -16,7 +16,8 @@ function handle(map, key, value) {
 
 function KeyApiMap(command, presenter, dataAccessObject, history, annotationData) {
   let showAccess = () => dataAccessObject.showAccess(history.hasAnythingToSave()),
-    showSave = () => dataAccessObject.showSave(annotationData.toJson())
+    showSave = () => dataAccessObject.showSave(annotationData.toJson()),
+    saveToHana = () => dataAccessObject.saveToHana(annotationData.toJson())
 
   return new Map([
     ['A', command.redo],
@@ -31,7 +32,7 @@ function KeyApiMap(command, presenter, dataAccessObject, history, annotationData
     ['Q', presenter.event.showPallet],
     ['R', presenter.event.replicate],
     ['S', presenter.event.speculation],
-    ['U', showSave],
+    ['U', saveToHana],
     ['V', presenter.event.pasteEntities],
     ['W', presenter.event.changeLabel],
     ['X', presenter.event.negation],
@@ -47,7 +48,8 @@ function KeyApiMap(command, presenter, dataAccessObject, history, annotationData
 
 function IconApiMap(command, presenter, dataAccessObject, history, annotationData, buttonController, updateLineHeight) {
   let showAccess = () => dataAccessObject.showAccess(history.hasAnythingToSave()),
-    showSave = () => dataAccessObject.showSave(annotationData.toJson())
+    showSave = () => dataAccessObject.showSave(annotationData.toJson()),
+    saveToHana = () => dataAccessObject.saveToHana(annotationData.toJson())
 
   return new Map(
     [
@@ -56,7 +58,7 @@ function IconApiMap(command, presenter, dataAccessObject, history, annotationDat
       ['textae.control.button.relation.click', presenter.event.toRelationMode],
       ['textae.control.button.simple.click', presenter.event.toggleSimpleMode],
       ['textae.control.button.read.click', showAccess],
-      ['textae.control.button.write.click', showSave],
+      ['textae.control.button.write.click', saveToHana],
       ['textae.control.button.undo.click', command.undo],
       ['textae.control.button.redo.click', command.redo],
       ['textae.control.button.replicate.click', presenter.event.replicate],

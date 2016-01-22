@@ -36,11 +36,23 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
       })
     },
     getAnnotationFromDatabase = function(entryIdentifier) {
-      $.get('https://' + window.location.hostname + ':8080/documents/' + entryIdentifier, function(data) {
+      cursorChanger.startWait()
+      toastr.info('', 'Loading...', {timeOut: 0, extendedTimeOut: 0})
+      let url = 'https://' + window.location.hostname + ':8080/documents/' + entryIdentifier
+      ajaxAccessor.getAsync(url, function(data) {
+        //success
+        console.log("Did load data from the database:")
+        console.log(data)
+        toastr.clear()
         api.emit('load', {
           annotation: data,
           source: "Database"
         })
+      }, function() {
+        //failure
+        toastr.clear()
+        cursorChanger.endWait()
+        toastr.error("Could not load the document :-(")
       })
     },
     // load/saveDialog
@@ -189,7 +201,6 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
             RowDiv = _.partial(jQuerySugar.Div, 'textae-editor__save-dialog__row'),
             RowLabel = _.partial(jQuerySugar.Label, 'textae-editor__save-dialog__label'),
             $saveButton = new jQuerySugar.Button('Save', 'url'),
-            $saveToHanaButton = new jQuerySugar.Button('Save', 'hana'),
             $content = $('<div>')
             .append(
               new RowDiv().append(
@@ -220,20 +231,6 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
               api.emit('save')
               $content.trigger('dialog.close')
             })
-            .append(new RowDiv().append(
-                new RowLabel(label.HANA),
-                $('<input type="text" placeholder="If empty, original name will be used" class="textae-editor__save-dialog__hana-document-name hana">'),
-                $saveToHanaButton
-              )
-            )
-            .on('click', '[type="button"].hana', function() {
-              var docName = jQuerySugar.getValueFromText($content, 'hana');
-              if (docName.length < 1) {
-                docName = JSON.parse($dialog.params).sourceid
-              }
-              saveAnnotationToServer('https://' + window.location.hostname + ':8080/documents/' + docName, $dialog.params)
-              $content.trigger('dialog.close')
-            })
             .append(
               new RowDiv().append(
                 new RowLabel(),
@@ -247,8 +244,6 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
               $content.trigger('dialog.close')
               return false
             })
-
-          jQuerySugar.enabled($saveToHanaButton, true)
 
           var $dialog = getDialog('textae.dialog.save', 'Save Annotations', $content)
 
@@ -269,6 +264,24 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
         },
         showSave: function(editorId, jsonData) {
           getSaveDialog(editorId).openAndSetParam(jsonData)
+        },
+        saveToHana: function(editorId, jsonData) {
+          var showSaveSuccess = function() {
+              api.emit('save')
+              cursorChanger.endWait()
+            },
+            showSaveError = function() {
+              api.emit('save error')
+              cursorChanger.endWait()
+            },
+            docName = JSON.parse(jsonData).sourceid
+          console.log("Saving document...")
+          console.log(jsonData)
+          let url = 'https://' + window.location.hostname + ':8080/documents/' + docName
+          cursorChanger.startWait()
+          ajaxAccessor.post(url, jsonData, showSaveSuccess, showSaveError, function() {
+            cursorChanger.endWait()
+          })
         }
       }
     }()
@@ -278,6 +291,7 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
     getAnnotationFromDatabase: getAnnotationFromDatabase,
     showAccess: _.partial(loadSaveDialog.showLoad, editor.editorId),
     showSave: _.partial(loadSaveDialog.showSave, editor.editorId),
+    saveToHana: _.partial(loadSaveDialog.saveToHana, editor.editorId),
   })
 
   return api
