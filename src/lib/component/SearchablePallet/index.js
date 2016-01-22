@@ -24,6 +24,16 @@ function show($pallet, typeContainer, point) {
 
     collapseAllRows($pallet)
 
+    let palletFilterFunction = function(filterText) {
+      console.log("Filtering: " + filterText)
+      clearPallet($pallet)
+      appendRows(typeContainer, $pallet, filterText)
+      if (filterText.length > 0)
+        expandAllRows($pallet)
+      else
+        collapseAllRows($pallet)
+    }
+    $pallet.filterFunction = palletFilterFunction
     // Move the pallet to mouse.
     $pallet
       .css(point)
@@ -37,7 +47,8 @@ function reuseOldPallet($pallet) {
   let $oldPallet = $('.textae-editor__type-pallet')
 
   if ($oldPallet.length !== 0) {
-    return $oldPallet.find('ul').empty().end().css('width', 'auto')
+    clearPallet($oldPallet)
+    return $oldPallet
   } else {
     // Append the pallet to body to show on top.
     $("body").append($pallet)
@@ -45,9 +56,13 @@ function reuseOldPallet($pallet) {
   }
 }
 
-function appendRows(typeContainer, $pallet) {
+function clearPallet($pallet) {
+  $pallet.find('ul').empty().end().css('width', 'auto')
+}
+
+function appendRows(typeContainer, $pallet, filterText = "") {
   $pallet.find("ul")
-     .append(new Row(typeContainer))
+     .append(new Row(typeContainer, filterText))
      .end()
 
   setupOnClickEvents(typeContainer, $pallet)
@@ -72,6 +87,8 @@ function setupOnClickEvents(typeContainer, $pallet) {
       console.log("Selected type:")
       console.log(typeCode)
       var type = typeContainer.getTypeForCode(typeCode)
+      console.log("Got type for code:")
+      console.log(type)
       typeSelection.selectType(type)
       $pallet.hide()
     })
@@ -84,6 +101,12 @@ function collapseAllRows($pallet) {
     if (match === undefined || match.length === 0) {
       $(entry).hide()
     }
+  })
+}
+
+function expandAllRows($pallet) {
+  $.each($pallet.find('.palletRowClassEntryList'), function(i, entry) {
+    $(entry).slideDown()
   })
 }
 
