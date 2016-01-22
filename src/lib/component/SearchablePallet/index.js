@@ -28,6 +28,8 @@ function show($pallet, typeContainer, point) {
     $pallet
       .css(point)
       .show()
+    $pallet.find('input[type=text]').val('')
+    $pallet.find('input[type=text]').focus()
   }
 }
 

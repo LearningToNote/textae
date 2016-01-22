@@ -23,11 +23,17 @@ export default function(editor, model, spanConfig, command, modeAccordingToButto
     showPallet: function(point) {
       if (elementEditor.handler.getSelectedType() !== undefined && elementEditor.handler.getSelectedType() !== "") {
         pallet.show(elementEditor.handler.typeContainer, point.point)
+        var showPalletEvent = new Event('showPallet')
+        document.body.dispatchEvent(showPalletEvent)
       }
     },
     getTypeOfSelected: () => elementEditor.handler.getSelectedType(),
     changeTypeOfSelected: (newType) => elementEditor.handler.changeTypeOfSelected(newType),
-    hideDialogs: pallet.hide,
+    hideDialogs: function() {
+      pallet.hide()
+      var hidePalletEvent = new Event('hidePallet')
+      document.body.dispatchEvent(hidePalletEvent)
+    },
     cancelSelect: () => cancelSelect(pallet, model.selectionModel),
     jsPlumbConnectionClicked: (jsPlumbConnection, event) => jsPlumbConnectionClicked(
       elementEditor,
@@ -42,6 +48,8 @@ function cancelSelect(pallet, selectionModel) {
   pallet.hide()
   selectionModel.clear()
   dismissBrowserSelection()
+  var hidePalletEvent = new Event('hidePallet')
+  document.body.dispatchEvent(hidePalletEvent)
 }
 
 // A relation is drawn by a jsPlumbConnection.
