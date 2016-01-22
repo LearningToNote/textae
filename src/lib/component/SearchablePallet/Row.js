@@ -33,7 +33,7 @@ function groupTypes(types) {
 
 export default function(typeContainer, filterText) {
   var types = typeContainer.getSortedNames()
-  types = types.filter(function(el) { return el.getLabel().indexOf(filterText) > -1 })
+  types = types.filter(function(el) { return el.getLabel().toLowerCase().indexOf(filterText.toLowerCase()) > -1 })
   let groupedTypes = groupTypes(types)
   var groups = []
 
