@@ -31,8 +31,9 @@ function groupTypes(types) {
   return groupedTypes
 }
 
-export default function(typeContainer) {
-  let types = typeContainer.getSortedNames()
+export default function(typeContainer, filterText) {
+  var types = typeContainer.getSortedNames()
+  types = types.filter(function(el) { return el.getLabel().indexOf(filterText) > -1 })
   let groupedTypes = groupTypes(types)
   var groups = []
 

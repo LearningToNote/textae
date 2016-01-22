@@ -5,6 +5,7 @@ from 'events'
 import EditorContainer from './EditorContainer'
 import ControlButtonHandler from './ControlButtonHandler'
 import KeyInputHandler from './KeyInputHandler'
+import EscOnlyKeyInputHandler from './EscOnlyKeyInputHandler'
 import observeKeyWithoutDialog from './observeKeyWithoutDialog'
 import HelpDialog from '../component/HelpDialog'
 
@@ -19,8 +20,9 @@ export default function() {
   // Start observation at document ready, because this function may be called before body is loaded.
   window.addEventListener('load', () => {
     let handleKeyInput = new KeyInputHandler(helpDialog, editors)
+    let handleEscInput = new EscOnlyKeyInputHandler(editors)
 
-    observeKeyWithoutDialog(handleKeyInput)
+    observeKeyWithoutDialog(handleKeyInput, handleEscInput)
     redrawOnResize(editors)
   })
 
