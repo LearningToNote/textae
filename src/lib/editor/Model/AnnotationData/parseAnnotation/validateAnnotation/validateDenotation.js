@@ -18,6 +18,9 @@ export default function(text, paragraph, denotations) {
     ),
     resultIsNotCrossing = validate(
       resultInParagraph.accept, (denotation, opt, index, array) => {
+        if (!isFromAllowedUser(denotation)) {
+          return false
+        }
         let filtered = array.slice(0, index).filter(d => isFromSameUser(denotation, d))
         let others = filtered.map(d => d.span),
           isInvalid = isBoundaryCrossingWithOtherSpans(others, denotation.span)
@@ -43,7 +46,11 @@ export default function(text, paragraph, denotations) {
 }
 
 function isFromSameUser(denotation, comparedDenotation) {
-  return denotation["userId"] === comparedDenotation["userId"]
+  return denotation.userId === comparedDenotation.userId
+}
+
+function isFromAllowedUser(denotation) {
+  return denotation.userId === 0 || denotation.userId === -1
 }
 
 function hasLength(denotation) {
