@@ -1,23 +1,21 @@
 
 var EntityType = function(data) {
     let NO_GROUP = "No Group",
-        NO_GROUP_ID = -1,
-        NO_CODE = -1,
+        NO_ID = -1,
         NO_NAME = "undefined"
     var name, code, group, groupId, label
     if (typeof data === 'string' || data instanceof String) {
         name = data
-        code = NO_CODE
+        code = NO_ID
         group = NO_GROUP
-        groupId = NO_GROUP_ID
+        groupId = NO_ID
         label = name
     } else {
-        name = jsValue(data["name"]) || NO_NAME,
-        code = jsValue(data["code"]) || NO_CODE,
-        group = jsValue(data["group"]) || NO_GROUP,
-        groupId = jsValue(data["groupId"]) || NO_GROUP_ID,
+        name = jsValue(data["name"]) || NO_NAME
+        code = jsValue(data["code"]) || NO_ID
+        group = jsValue(data["group"]) || NO_GROUP
+        groupId = jsValue(data["groupId"]) || NO_ID
         label = jsValue(data["label"]) || name
-        console.log(label)
     }
     return {
         getLabel: () => label,
