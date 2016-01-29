@@ -51,15 +51,17 @@ class RemoveCommand extends Command {
 }
 
 class ChangeTypeCommand extends Command {
-  constructor(model, modelType, id, newType) {
+  constructor(model, modelType, id, newType, userId) {
     super(function() {
       let oldType = model.annotationData[modelType].get(id).type
 
       // Update model
       let targetModel = model.annotationData[modelType].changeType(id, newType)
+      let oldUserId = targetModel.userId
+      targetModel.userId = userId || 0
 
       // Set revert
-      this.revert = () => new ChangeTypeCommand(model, modelType, id, oldType)
+      this.revert = () => new ChangeTypeCommand(model, modelType, id, oldType, oldUserId)
 
       commandLog('change type of a ' + modelType + '. oldtype:' + oldType + ' ' + modelType + ':', targetModel)
     })
@@ -67,15 +69,17 @@ class ChangeTypeCommand extends Command {
 }
 
 class ChangeLabelCommand extends Command {
-  constructor(model, modelType, id, newLabel) {
+  constructor(model, modelType, id, newLabel, userId) {
     super(function() {
       let oldLabel = model.annotationData[modelType].get(id).type.getLabel()
 
       // Update model
       let targetModel = model.annotationData[modelType].changeLabel(id, newLabel)
+      let oldUserId = targetModel.userId
+      targetModel.userId = userId || 0
 
       // Set revert
-      this.revert = () => new ChangeLabelCommand(model, modelType, id, oldLabel)
+      this.revert = () => new ChangeLabelCommand(model, modelType, id, oldLabel, oldUserId)
 
       commandLog('change type of a ' + modelType + '. old label:' + oldLabel + ' ' + modelType + ':', targetModel)
     })
