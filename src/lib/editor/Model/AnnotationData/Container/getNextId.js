@@ -11,7 +11,7 @@ export default function(prefix, existsIds) {
 
 function hasPrefix(prefix, id) {
   // Exclude an id have other than prefix and number, for example 'T1a'.
-  let reg = new RegExp(`${prefix}\\d+$`)
+  let reg = new RegExp(`^${prefix}\\d+$`)
 
   return reg.test(id)
 }
