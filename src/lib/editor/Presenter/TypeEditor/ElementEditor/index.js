@@ -7,6 +7,7 @@ const DEFAULT_HANDLER = {
   changeTypeOfSelected: null,
   getSelectedIdEditable: returnEmptyArray,
   getSelectedType: null,
+  getSelectedUserId: null,
   // The Reference to content to be shown in the pallet.
   typeContainer: null,
   // A Swithing point to change a behavior when relation is clicked.

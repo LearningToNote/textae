@@ -47,6 +47,14 @@ export default function(editor, model, command, modeAccordingToButton, typeConta
         else
           return ''
       },
+      getSelectedUserId: () => {
+        let entityId = selectionModel.entity.single()
+
+        if (entityId)
+          return model.annotationData.entity.get(entityId).userId
+        else
+          return -1 //userId 0 would be the current user
+      },
       typeContainer: typeContainer.entity,
       jsPlumbConnectionClicked: null
     }

@@ -21,10 +21,15 @@ export default function(editor, model, spanConfig, command, modeAccordingToButto
     editEntity: elementEditor.start.editEntity,
     noEdit: elementEditor.start.noEdit,
     showPallet: function(point) {
-      if (elementEditor.handler.getSelectedType() !== undefined && elementEditor.handler.getSelectedType() !== "") {
-        pallet.show(elementEditor.handler.typeContainer, point.point)
-        var showPalletEvent = new Event('showPallet')
-        document.body.dispatchEvent(showPalletEvent)
+      console.log("ShowPallet ", elementEditor, elementEditor.handler)
+      if (elementEditor.handler.getSelectedUserId() === 0) {
+        if (elementEditor.handler.getSelectedType() !== undefined && elementEditor.handler.getSelectedType() !== "") {
+          pallet.show(elementEditor.handler.typeContainer, point.point)
+          var showPalletEvent = new Event('showPallet')
+          document.body.dispatchEvent(showPalletEvent)
+        }
+      } else {
+        toastr.info('Accept the selected entity first ([A]) and edit your copy.', "You're not allowed to edit entities of other people.")
       }
     },
     getTypeOfSelected: () => elementEditor.handler.getSelectedType(),
