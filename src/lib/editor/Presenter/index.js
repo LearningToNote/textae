@@ -91,7 +91,8 @@ export default function(
       removeSelectedElements: () => removeSelectedElements(
         command,
         model.selectionModel,
-        selectHandler
+        selectHandler,
+        model.annotationData
       ),
       acceptSelectedElements: defaultEntityHandler.acceptEntity,
       createEntity: defaultEntityHandler.createEntity,
