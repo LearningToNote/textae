@@ -4,10 +4,10 @@ import getDisplayName from './getDisplayName'
 import getTypeDom from '../getTypeDom'
 
 // render type unless exists.
-export default function(namespace, typeContainer, gridRenderer, spanId, type) {
+export default function(namespace, typeContainer, gridRenderer, spanId, type, userId) {
   let $type = getTypeDom(spanId, type)
   if ($type.length === 0) {
-    $type = createEmptyTypeDomElement(namespace, typeContainer, spanId, type)
+    $type = createEmptyTypeDomElement(namespace, typeContainer, spanId, type, userId)
     getGrid(gridRenderer, spanId).appendChild($type[0])
   }
 
@@ -78,7 +78,7 @@ function setLabelName(typeLabel, namespace, typeContainer, type) {
 }
 
 // A Type element has an entity_pane elment that has a label and will have entities.
-function createEmptyTypeDomElement(namespace, typeContainer, spanId, type) {
+function createEmptyTypeDomElement(namespace, typeContainer, spanId, type, userId) {
   let typeId = idFactory.makeTypeId(spanId, type)
 
   // The EntityPane will have entities.
@@ -89,9 +89,10 @@ function createEmptyTypeDomElement(namespace, typeContainer, spanId, type) {
   // The label over the span.
   let $typeLabel = $('<div>')
     .addClass('textae-editor__type-label')
-    .css({
-      'background-color': typeContainer.entity.getColor(type),
-    })
+    .addClass('entity_user_' + userId)
+  if (userId == undefined) {
+    $typeLabel.css({'background-color': typeContainer.entity.getColor(type)})
+  }
 
   $typeLabel[0].setAttribute('tabindex', 0)
 

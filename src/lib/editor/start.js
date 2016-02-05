@@ -10,6 +10,7 @@ import Presenter from './Presenter'
 import bindMouseEvent from './bindMouseEvent'
 import APIs from './APIs'
 import calculateLineHeight from './calculateLineHeight'
+import UserLegend from '../component/UserLegend'
 
 export default function(editor, dataAccessObject, history, buttonController, model, clipBoard, writable) {
   let params = getParams(editor),
@@ -88,6 +89,20 @@ function setAnnotation(spanConfig, typeContainer, annotationData, config, annota
 }
 
 function setConfigInAnnotation(spanConfig, typeContainer, annotation) {
+  if (annotation.config !== undefined && annotation.config.users !== undefined) {
+    let legend = new UserLegend(annotation.config.users)
+    $('body').prepend(legend)
+    console.log("My awesome legend: ", legend)
+    var cssString = ""
+    for (var userId in annotation.config.users) {
+      if (annotation.config.users.hasOwnProperty(userId)) {
+        var userInfo = annotation.config.users[userId]
+        cssString += ".entity_user_" + userId + " {\n\t"
+        cssString += "background-color: " + userInfo.color + "\n}\n"
+      }
+    }
+    annotation.config["raw_css"] = cssString
+  }
   spanConfig.reset()
   setSpanAndTypeConfig(spanConfig, typeContainer, annotation.config)
 
@@ -123,6 +138,10 @@ function setTypeConfig(typeContainer, config) {
 
   if (config && config.css !== undefined) {
     $('#css_area').html('<link rel="stylesheet" href="' + config.css + '"/>')
+  }
+
+  if (config && config["raw_css"] !== undefined) {
+    $('head').append('<style type="text/css">' + config["raw_css"] + '</style>')
   }
 
   return config

@@ -18,7 +18,8 @@ export default function(editor, namspace, typeContainer, gridRenderer, modificat
       typeContainer,
       gridRenderer,
       entity.span,
-      entity.type
+      entity.type,
+      entity.userId
     )
     .find('.textae-editor__entity-pane'),
     entityDomId = idFactory.makeEntityDomId(editor, entity.id)

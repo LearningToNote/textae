@@ -4,18 +4,14 @@ const BLOCK = 'textae-editor__span--block',
   WRAP = 'textae-editor__span--wrap',
   PREDICTION = 'textae-editor__span--prediction'
 
-export default function(span, isBlockFunc, userId) {
+export default function(span, isBlockFunc) {
   var spanElement = document.querySelector('#' + span.id)
 
-  if (userId !== undefined && userId === -1) { //-1 is the prediction
-    spanElement.classList.add(PREDICTION)
+  spanElement.classList.remove(PREDICTION)
+  if (hasType(span, isBlockFunc)) {
+    spanElement.classList.add(BLOCK)
   } else {
-    spanElement.classList.remove(PREDICTION)
-    if (hasType(span, isBlockFunc)) {
-      spanElement.classList.add(BLOCK)
-    } else {
-      spanElement.classList.remove(BLOCK)
-    }
+    spanElement.classList.remove(BLOCK)
   }
 
   if (hasType(span, not(isBlockFunc))) {

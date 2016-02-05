@@ -132,8 +132,6 @@ const source = `
 let tepmlate = Handlebars.compile(source)
 
 export default function(editor, rejects) {
-  //TODO: show rejection errors again
-  return
   if (!hasError(rejects))
     return
 
