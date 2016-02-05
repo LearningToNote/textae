@@ -92,7 +92,7 @@ function setConfigInAnnotation(spanConfig, typeContainer, annotation) {
   if (annotation.config !== undefined && annotation.config.users !== undefined) {
     let legend = new UserLegend(annotation.config.users)
     $('body').prepend(legend)
-    console.log("My awesome legend: ", legend)
+    legend.draggable()
     var cssString = ""
     for (var userId in annotation.config.users) {
       if (annotation.config.users.hasOwnProperty(userId)) {
