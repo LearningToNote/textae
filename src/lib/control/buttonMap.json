@@ -1,8 +1,11 @@
 {
     "buttonGroup": [{
         "list": [{
+            "type": "read",
+            "title": "Import [I]"
+        }, {
             "type": "write",
-            "title": "Upload [U]"
+            "title": "Save [S]"
         }]
     }, {
         "list": [{
@@ -48,34 +51,20 @@
             "title": "New entity [E]"
         }, {
             "type": "pallet",
-            "title": "Select label [Q]"
+            "title": "Select type [T]"
         }, {
             "type": "change-label",
-            "title": "Change label [W]"
-        }]
-    }, {
-        "list": [{
-            "type": "negation",
-            "title": "Negation [X]"
-        }, {
-            "type": "speculation",
-            "title": "Speculation [S]"
+            "title": "Change custom label [L]"
         }]
     }, {
         "list": [{
             "type": "delete",
             "title": "Delete [D]"
-        }, {
-            "type": "copy",
-            "title": "Copy [C]"
-        }, {
-            "type": "paste",
-            "title": "Paste [V]"
         }]
     }, {
         "list": [{
             "type": "setting",
-            "title": "Setting"
+            "title": "Settings"
         }]
     }, {
         "list": [{
