@@ -22,7 +22,8 @@ export default function(editor, model, spanConfig, command, modeAccordingToButto
     noEdit: elementEditor.start.noEdit,
     showPallet: function(point) {
       console.log("ShowPallet ", elementEditor, elementEditor.handler)
-      if (elementEditor.handler.getSelectedUserId() === 0) {
+      if (elementEditor.handler.getSelectedUserId() === undefined ||
+        elementEditor.handler.getSelectedUserId() === 0) {
         if (elementEditor.handler.getSelectedType() !== undefined && elementEditor.handler.getSelectedType() !== "") {
           pallet.show(elementEditor.handler.typeContainer, point.point)
           var showPalletEvent = new Event('showPallet')
