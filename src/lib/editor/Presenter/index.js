@@ -93,6 +93,7 @@ export default function(
         model.selectionModel,
         selectHandler
       ),
+      acceptSelectedElements: defaultEntityHandler.acceptEntity,
       createEntity: defaultEntityHandler.createEntity,
       showPallet: typeEditor.showPallet,
       replicate: defaultEntityHandler.replicate,
