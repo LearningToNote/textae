@@ -11,7 +11,9 @@ export default function(command, selectionModel, selectHandler, annotationData) 
       relationsFromOtherUsers = relationIds.filter((id) => { return relationFromOtherUser(annotationData, id) })
     console.log("Should delete ", relationIds, relationsFromOtherUsers)
     if (entitiesFromOtherUsers.length !== 0 || spanEntitiesFromOtherUsers.length !== 0 || relationsFromOtherUsers.length !== 0) {
-      toastr.info('', "You're not allowed to delete entities and relations of other people.")
+      toastr.info('',
+        "You're not allowed to delete entities and relations of other people.",
+        {progressBar: true, closeButton: true})
       return
     }
   }

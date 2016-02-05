@@ -30,7 +30,9 @@ export default function(editor, model, spanConfig, command, modeAccordingToButto
           document.body.dispatchEvent(showPalletEvent)
         }
       } else {
-        toastr.info('Accept the selected entity first ([A]) and edit your copy.', "You're not allowed to edit entities of other people.")
+        toastr.info('Accept the selected entity first ([A]) and edit your copy.',
+          "You're not allowed to edit entities and relations of other people.",
+          {progressBar: true, closeButton: true})
       }
     },
     getTypeOfSelected: () => elementEditor.handler.getSelectedType(),
