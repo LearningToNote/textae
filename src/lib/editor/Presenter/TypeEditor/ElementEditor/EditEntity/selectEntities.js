@@ -16,10 +16,10 @@ export default function(selectionModel, ctrlKey, typeLabel, entities) {
   return false
 
   function select(selectionModel, entities) {
-    Array.prototype.forEach.call(entities, (entity) => selectionModel.entity.add(entity.title))
+    Array.prototype.forEach.call(entities, (entity) => selectionModel.entity.add(entity.getAttribute('data-model_id')))
   }
 
   function deselect(selectionModel, entities) {
-    Array.prototype.forEach.call(entities, (entity) => selectionModel.entity.remove(entity.title))
+    Array.prototype.forEach.call(entities, (entity) => selectionModel.entity.remove(entity.getAttribute('data-model_id')))
   }
 }

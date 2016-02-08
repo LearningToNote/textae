@@ -5,7 +5,7 @@ export default function createEntityElement(editor, typeContainer, modification,
   let element = document.createElement('div')
 
   element.setAttribute('id', idFactory.makeEntityDomId(editor, entity.id))
-  element.setAttribute('title', entity.id)
+  element.setAttribute('data-model_id', entity.id)
   element.setAttribute('type', entity.type)
   element.classList.add('textae-editor__entity')
 

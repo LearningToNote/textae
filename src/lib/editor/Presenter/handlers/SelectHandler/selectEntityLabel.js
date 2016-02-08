@@ -10,6 +10,6 @@ export default function selectEntityLabel(selectionModel, dom, isMulti) {
     if (!isMulti)
       selectionModel.clear()
 
-    selectionModel.entity.add(Array.from(allEntityOflabels).map(dom => dom.title))
+    selectionModel.entity.add(Array.from(allEntityOflabels).map(dom => dom.getAttribute('data-model_id')))
   }
 }

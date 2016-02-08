@@ -13,6 +13,6 @@ export default function(editor, presenter, view) {
         return false
     })
     .on('mouseup', '.textae-editor__body,.textae-editor__span,.textae-editor__grid,.textae-editor__entity', presenter.event.editorSelected)
-    .on('mouseenter', '.textae-editor__entity', (e) => view.hoverRelation.on($(e.target).attr('title')))
-    .on('mouseleave', '.textae-editor__entity', (e) => view.hoverRelation.off($(e.target).attr('title')))
+    .on('mouseenter', '.textae-editor__entity', (e) => view.hoverRelation.on($(e.target).attr('data-model_id')))
+    .on('mouseleave', '.textae-editor__entity', (e) => view.hoverRelation.off($(e.target).attr('data-model_id')))
 }

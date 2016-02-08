@@ -68,7 +68,7 @@ export default function(editor, selectionModel, annotationData, command, typeCon
 function entityClickedAtRelationMode(selectionModel, command, typeContainer, e) {
   if (!selectionModel.entity.some()) {
     selectionModel.clear()
-    selectionModel.entity.add($(e.target).attr('title'))
+    selectionModel.entity.add($(e.target).attr('data-model_id'))
   } else {
     selectObjectEntity(selectionModel, command, typeContainer, e)
   }
@@ -96,7 +96,7 @@ function selectRelation(selectionModel, jsPlumbConnection, event) {
 function selectObjectEntity(selectionModel, command, typeContainer, e) {
   // Cannot make a self reference relation.
   let subjectEntityId = selectionModel.entity.all()[0],
-    objectEntityId = $(e.target).attr('title')
+    objectEntityId = $(e.target).attr('data-model_id')
 
   if (subjectEntityId === objectEntityId) {
     // Deslect already selected entity.

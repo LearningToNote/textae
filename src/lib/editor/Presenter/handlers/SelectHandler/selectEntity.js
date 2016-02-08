@@ -12,7 +12,6 @@ export default function(selectionModel, dom, isMulti) {
   if (dom) {
     if (!isMulti)
       selectionModel.clear()
-
-    selectionModel.entity.add(dom.title)
+    selectionModel.entity.add(dom.getAttribute('data-model_id'))
   }
 }
