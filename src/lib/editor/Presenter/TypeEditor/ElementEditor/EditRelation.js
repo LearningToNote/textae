@@ -14,7 +14,8 @@ export default function(editor, selectionModel, annotationData, command, typeCon
           selectionModel,
           command,
           typeContainer,
-          e
+          e,
+          annotationData.entity
         ))
         .on('mouseup', '.textae-editor__relation, .textae-editor__relation__label', returnFalse)
         .on('mouseup', '.textae-editor__body', cancelSelect)
@@ -65,10 +66,17 @@ export default function(editor, selectionModel, annotationData, command, typeCon
   return () => [bind, handler]
 }
 
-function entityClickedAtRelationMode(selectionModel, command, typeContainer, e) {
+function entityClickedAtRelationMode(selectionModel, command, typeContainer, e, entityModelContainer) {
+  let entityId = $(e.target).attr('data-model_id')
+  if (entityModelContainer.get(entityId).userId !== 0) {
+    toastr.info("Accept the affected entity first ([A]) and use your copy.",
+      "You're not allowed to create relations with entities of other users.",
+      {progressBar: true, closeButton: true})
+    return false
+  }
   if (!selectionModel.entity.some()) {
     selectionModel.clear()
-    selectionModel.entity.add($(e.target).attr('data-model_id'))
+    selectionModel.entity.add(entityId)
   } else {
     selectObjectEntity(selectionModel, command, typeContainer, e)
   }
