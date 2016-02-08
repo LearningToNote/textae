@@ -45,10 +45,14 @@ export default function(editor, selectionModel, annotationData, command, typeCon
       getSelectedUserId: () => {
         let relationId = selectionModel.relation.single()
 
-        if (relationId)
-          return annotationData.relation.get(relationId).userId
-        else
-          return -1 //userId 0 would be the current user
+        if (relationId) {
+          let subj = annotationData.relation.get(relationId).subj
+          let obj = annotationData.relation.get(relationId).obj
+          if (annotationData.entity.get(obj).userId === annotationData.entity.get(subj).userId) {
+            return annotationData.entity.get(obj).userId
+          }
+        }
+        return -1 //userId 0 would be the current user
       },
       typeContainer: typeContainer.relation,
       jsPlumbConnectionClicked: (jsPlumbConnection, event) => selectRelation(

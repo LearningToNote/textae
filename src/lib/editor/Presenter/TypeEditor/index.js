@@ -36,6 +36,7 @@ export default function(editor, model, spanConfig, command, modeAccordingToButto
       }
     },
     getTypeOfSelected: () => elementEditor.handler.getSelectedType(),
+    getUserIdOfSelected: () => elementEditor.handler.getSelectedUserId(),
     changeTypeOfSelected: (newType) => elementEditor.handler.changeTypeOfSelected(newType),
     changeLabelOfSelected: (newLabel) => elementEditor.handler.changeLabelOfSelected(newLabel),
     hideDialogs: function() {
