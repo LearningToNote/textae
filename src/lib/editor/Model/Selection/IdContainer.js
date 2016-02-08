@@ -24,11 +24,11 @@ function add(selected, emitter, kindName, id) {
       emitter.emit(kindName + '.select', id)
       triggerChange(emitter, kindName)
     })
+  } else {
+    selected.add(id)
+    emitter.emit(kindName + '.select', id)
+    triggerChange(emitter, kindName)
   }
-
-  selected.add(id)
-  emitter.emit(kindName + '.select', id)
-  triggerChange(emitter, kindName)
 }
 
 function single(selected) {
