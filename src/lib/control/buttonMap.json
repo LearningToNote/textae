@@ -1,9 +1,6 @@
 {
     "buttonGroup": [{
         "list": [{
-            "type": "read",
-            "title": "Import [I]"
-        }, {
             "type": "write",
             "title": "Save [S]"
         }]
