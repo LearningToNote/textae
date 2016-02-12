@@ -7,7 +7,8 @@ import updateButtons from './updateButtons'
 // Buttons that always eanable.
 const ALWAYS_ENABLES = {
   read: true,
-  help: true
+  help: true,
+  write: true
 }
 
 // The control is a control bar to edit.
@@ -34,7 +35,7 @@ export default function($control) {
 
 function updateAllButtonEnableState($control, buttonList, enableButtons) {
   // Make buttons in a enableButtons enabled, and other buttons in the buttonList disabled.
-  let enables = _.extend({}, buttonList, ALWAYS_ENABLES, enableButtons)
+  let enables = _.extend({}, buttonList, enableButtons, ALWAYS_ENABLES)
 
   // A function to enable/disable button.
   updateButtons($control, buttonList, enables)
