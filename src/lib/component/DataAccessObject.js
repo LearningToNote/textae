@@ -7,6 +7,7 @@ import * as ajaxAccessor from '../util/ajaxAccessor'
 import CursorChanger from '../util/CursorChanger'
 import GetEditorDialog from './dialog/GetEditorDialog'
 import jQuerySugar from './jQuerySugar'
+import DataCache from './DataCache'
 
 var bindEvent = function($target, event, func) {
     $target.on(event, func)
@@ -22,6 +23,7 @@ var bindEvent = function($target, event, func) {
 module.exports = function(editor, confirmDiscardChangeMessage) {
   var dataSourceUrl = '',
     cursorChanger = new CursorChanger(editor),
+    dataCache = new DataCache(),
     getAnnotationFromServer = function(urlToJson) {
       cursorChanger.startWait()
       ajaxAccessor.getAsync(urlToJson, function getAnnotationFromServerSuccess(annotation) {
@@ -43,6 +45,7 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
         //success
         console.log("Did load data from the database:")
         console.log(data)
+        dataCache.setNewData(data)
         toastr.clear()
         api.emit('load', {
           annotation: data,
@@ -50,9 +53,22 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
         })
       }, function() {
         //failure
+        dataCache.setNewData()
         toastr.clear()
         cursorChanger.endWait()
         toastr.error("Could not load the document :-(")
+      })
+    },
+    filterUsersFromCachedData = function(currentState, filteredUsers) {
+      cursorChanger.startWait()
+      toastr.info('', 'Loading...', {timeOut: 0, extendedTimeOut: 0})
+      var filteredData = dataCache.filterData(filteredUsers)
+      toastr.clear()
+      cursorChanger.endWait()
+      console.log("FilteredData: ", filteredData)
+      api.emit('load', {
+        annotation: filteredData,
+        source: "Database"
       })
     },
     // load/saveDialog
@@ -289,6 +305,7 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
   var api = _.extend(new EventEmitter(), {
     getAnnotationFromServer: getAnnotationFromServer,
     getAnnotationFromDatabase: getAnnotationFromDatabase,
+    filterUsersFromData: filterUsersFromCachedData,
     showAccess: _.partial(loadSaveDialog.showLoad, editor.editorId),
     showSave: _.partial(loadSaveDialog.showSave, editor.editorId),
     saveToHana: _.partial(loadSaveDialog.saveToHana, editor.editorId),

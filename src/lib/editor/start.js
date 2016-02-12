@@ -41,6 +41,15 @@ export default function(editor, dataAccessObject, history, buttonController, mod
 
   dataAccessObject
     .on('load', data => {
+      var legend = $('body').find(".textae-editor__legend")[0]
+      if (legend === undefined) {
+        console.log("CREATING NEW LEGEND")
+        legend = new UserLegend(data.annotation.config.users, dataAccessObject)
+        $('body').prepend(legend)
+        legend.draggable()
+      } else {
+        console.log("FOUND LEGEND", legend)
+      }
       setAnnotation(spanConfig, typeContainer, model.annotationData, params.config, data.annotation)
       statusBar.status(data.source)
     })
@@ -90,9 +99,6 @@ function setAnnotation(spanConfig, typeContainer, annotationData, config, annota
 
 function setConfigInAnnotation(spanConfig, typeContainer, annotation) {
   if (annotation.config !== undefined && annotation.config.users !== undefined) {
-    let legend = new UserLegend(annotation.config.users)
-    $('body').prepend(legend)
-    legend.draggable()
     var cssString = ""
     for (var userId in annotation.config.users) {
       if (annotation.config.users.hasOwnProperty(userId)) {

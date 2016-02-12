@@ -2,7 +2,7 @@
 function groupBy(array, selectionFunction) {
     var groups = {}
     array.forEach( function(element) {
-        var key = selectionFunction(element)
+        var key = String(selectionFunction(element))
         groups[key] = groups[key] || []
         groups[key].push(element)
     })
@@ -23,7 +23,7 @@ module.exports = function() {
                 groupedRelations = {}
 
             //relation.subj and relation.obj should always have the same user
-            groupedRelations = groupBy(relations, (relation) => { return annotationsById[relation.subj][0].userId })
+            groupedRelations = groupBy(relations, (relation) => { return annotationsById[String(relation.subj)][0].userId })
             return groupedRelations
         }
 
@@ -45,10 +45,10 @@ module.exports = function() {
         },
         filterData: function(hiddenUsers) {
             var allUsers = Object.keys(annotationsPerUser).filter( (key) => { return annotationsPerUser.hasOwnProperty(key) }),
-                allowedUsers = _.difference(allUsers, hiddenUsers.map((userId) => { return JSON.stringify(userId)})),
-                denotations = allowedUsers.map((e) => { return annotationsPerUser[e] })
+                allowedUsers = _.difference(allUsers, hiddenUsers.map((userId) => { return String(userId)})),
+                denotations = allowedUsers.map((e) => { return annotationsPerUser[String(e)] })
                                           .filter((e) => { return e !== undefined}),
-                relations = allowedUsers.map((e) => { return relationsPerUser[e] })
+                relations = allowedUsers.map((e) => { return relationsPerUser[String(e)] })
                                         .filter((e) => { return e !== undefined})
 
             return {
