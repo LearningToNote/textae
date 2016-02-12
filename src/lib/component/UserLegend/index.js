@@ -1,6 +1,6 @@
 
 
-export default function(userColorMapping, dataAccessObject) {
+export default function(userColorMapping, dataAccessObject, annotationData) {
     var hiddenUsers = [],
         colorList = $('<table>')
     for (var key in userColorMapping) {
@@ -42,7 +42,7 @@ export default function(userColorMapping, dataAccessObject) {
                         currentStateCircle.css("display", "block")
                         hiddenUsers.splice(index, 1)
                     }
-                    dataAccessObject.filterUsersFromData([], hiddenUsers)
+                    dataAccessObject.filterUsersFromData(annotationData.toJson(), hiddenUsers)
                 })
                 colorColumn.append(colorCircle)
             }

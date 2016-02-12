@@ -44,7 +44,7 @@ export default function(editor, dataAccessObject, history, buttonController, mod
       var legend = $('body').find(".textae-editor__legend")[0]
       if (legend === undefined) {
         console.log("CREATING NEW LEGEND")
-        legend = new UserLegend(data.annotation.config.users, dataAccessObject)
+        legend = new UserLegend(data.annotation.config.users, dataAccessObject, model.annotationData)
         $('body').prepend(legend)
         legend.draggable()
       } else {

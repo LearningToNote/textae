@@ -62,7 +62,7 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
     filterUsersFromCachedData = function(currentState, filteredUsers) {
       cursorChanger.startWait()
       toastr.info('', 'Loading...', {timeOut: 0, extendedTimeOut: 0})
-      var filteredData = dataCache.filterData(filteredUsers)
+      var filteredData = dataCache.filterData(currentState, filteredUsers)
       toastr.clear()
       cursorChanger.endWait()
       console.log("FilteredData: ", filteredData)

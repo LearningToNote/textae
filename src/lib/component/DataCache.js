@@ -33,7 +33,7 @@ module.exports = function() {
                 config = data.config
                 annotationsPerUser = groupAnnotationsByUser(data.denotations)
                 relationsPerUser = groupRelationsByUser(data.relations, data.denotations)
-                sourceId = data.sourceId
+                sourceId = data.sourceid
                 text = data.text
             } else {
                 config = undefined
@@ -43,7 +43,12 @@ module.exports = function() {
                 text = undefined
             }
         },
-        filterData: function(hiddenUsers) {
+        filterData: function(annotationDataJson, hiddenUsers) {
+            let currentState = JSON.parse(annotationDataJson),
+                currentAnnotationsPerUser = groupAnnotationsByUser(currentState.denotations),
+                currentRelationsPerUser = groupRelationsByUser(currentState.relations, currentState.denotations)
+            annotationsPerUser["0"] = currentAnnotationsPerUser["0"]
+            relationsPerUser["0"] = currentRelationsPerUser["0"]
             var allUsers = Object.keys(annotationsPerUser).filter( (key) => { return annotationsPerUser.hasOwnProperty(key) }),
                 allowedUsers = _.difference(allUsers, hiddenUsers.map((userId) => { return String(userId)})),
                 denotations = allowedUsers.map((e) => { return annotationsPerUser[String(e)] })
@@ -55,7 +60,7 @@ module.exports = function() {
                 config: config,
                 denotations: _.flatten(denotations),
                 relations: _.flatten(relations),
-                sourceId: sourceId,
+                sourceid: sourceId,
                 text: text
             }
         }
