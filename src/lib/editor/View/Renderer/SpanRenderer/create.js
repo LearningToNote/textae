@@ -9,7 +9,6 @@ export default create
 // Destroy children spans to wrap a TextNode with <span> tag when new span over exists spans.
 function create(span, annotationData, isBlockFunc, renderEntityFunc) {
   var userId = undefined
-  console.log("Creating ", span, annotationData, isBlockFunc, renderEntityFunc)
   destroyChildrenSpan(span)
 
   let bigBrother = getBigBrother(span, annotationData.span.topLevel())
