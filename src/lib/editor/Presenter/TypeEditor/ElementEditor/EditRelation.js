@@ -68,7 +68,8 @@ export default function(editor, selectionModel, annotationData, command, typeCon
 
 function entityClickedAtRelationMode(selectionModel, command, typeContainer, e, entityModelContainer) {
   let entityId = $(e.target).attr('data-model_id')
-  if (entityModelContainer.get(entityId).userId !== 0) {
+  if (entityModelContainer.get(entityId).userId !== 0 &&
+      entityModelContainer.get(entityId).userId !== undefined) {
     toastr.info("Accept the affected entity first ([A]) and use your copy.",
       "You're not allowed to create relations with entities of other users.",
       {progressBar: true, closeButton: true})
