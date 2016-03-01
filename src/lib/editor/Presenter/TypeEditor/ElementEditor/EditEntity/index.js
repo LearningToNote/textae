@@ -53,7 +53,7 @@ export default function(editor, model, command, modeAccordingToButton, typeConta
         if (entityId)
           return model.annotationData.entity.get(entityId).userId
         else
-          return -1 //userId 0 would be the current user
+          return undefined //userId 0 would be the current user
       },
       typeContainer: typeContainer.entity,
       jsPlumbConnectionClicked: null

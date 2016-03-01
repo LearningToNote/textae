@@ -53,7 +53,7 @@ export default function(editor, selectionModel, annotationData, command, typeCon
             return annotationData.entity.get(obj).userId
           }
         }
-        return -1 //userId 0 would be the current user
+        return undefined //userId 0 would be the current user
       },
       typeContainer: typeContainer.relation,
       jsPlumbConnectionClicked: (jsPlumbConnection, event) => selectRelation(
