@@ -2,12 +2,12 @@ import Handlebars from 'handlebars'
 
 const html = `
 {{#groups}}
-<li class="palletRowClassElement" style="background-color: {{color}};">
+<li class="textae-editor__type-pallet__group" style="background-color: {{color}};">
   {{groupName}}
-  <ul class="palletRowClassEntryList">
+  <ul class="textae-editor__type-pallet__entrylist">
     {{#entries}}
-    <li class="palletRowClassEntry">
-      <input type="radio" name="etype" label="{{typeCode}}" id="{{typeCode}}" {{#if defaultType}}title="default type" checked="checked"{{/if}}/>
+    <li class="textae-editor__type-pallet__entry">
+      <input type="radio" name="etype" label="{{typeCode}}" id="{{typeCode}}" {{#if defaultType}}checked="checked"{{/if}}/>
       <label for="{{typeCode}}">{{typeName}}</label>
     </li>
     {{/entries}}
@@ -31,7 +31,7 @@ function groupTypes(types) {
   return groupedTypes
 }
 
-export default function(typeContainer, filterText) {
+export default function(typeContainer, filterText, selectedType) {
   var types = typeContainer.getSortedNames()
   types = types.filter(function(el) { return el.getLabel().toLowerCase().indexOf(filterText.toLowerCase()) > -1 })
   let groupedTypes = groupTypes(types)
@@ -45,7 +45,7 @@ export default function(typeContainer, filterText) {
           return {
             typeName: type.getName(),
             typeCode: type.getCode(),
-            defaultType: type.getName() === typeContainer.getDefaultType(),
+            defaultType: selectedType !== undefined && type.getName() === selectedType.getName(),
             uri: typeContainer.getUri(type),
             color: typeContainer.getColor(type)
           }

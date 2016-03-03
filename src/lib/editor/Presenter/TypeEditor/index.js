@@ -21,11 +21,11 @@ export default function(editor, model, spanConfig, command, modeAccordingToButto
     editEntity: elementEditor.start.editEntity,
     noEdit: elementEditor.start.noEdit,
     showPallet: function(point) {
-      console.log("ShowPallet ", elementEditor, elementEditor.handler)
+      console.log("ShowPallet ", elementEditor, elementEditor.handler, elementEditor.handler.getSelectedUserId())
       if (elementEditor.handler.getSelectedUserId() === undefined ||
         elementEditor.handler.getSelectedUserId() === 0) {
         if (elementEditor.handler.getSelectedType() !== undefined && elementEditor.handler.getSelectedType() !== "") {
-          pallet.show(elementEditor.handler.typeContainer, point.point)
+          pallet.show(elementEditor.handler.typeContainer, point.point, elementEditor.handler.getSelectedType())
           var showPalletEvent = new Event('showPallet')
           document.body.dispatchEvent(showPalletEvent)
         }

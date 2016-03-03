@@ -9,17 +9,17 @@ export default function(selectType, selectDefaultType) {
   typeSelection.selectDefaultType = selectDefaultType
 
   return {
-    show: (typeContainer, point) => show($pallet, typeContainer, point),
+    show: (typeContainer, point, selectedType) => show($pallet, typeContainer, point, selectedType),
     hide: () => $pallet.hide()
   }
 }
 
-function show($pallet, typeContainer, point) {
+function show($pallet, typeContainer, point, selectedType) {
   console.log("TypeContainer:")
   console.log(typeContainer)
   if (typeContainer && typeContainer.getSortedNames().length > 0) {
     $pallet = reuseOldPallet($pallet)
-    $pallet = appendRows(typeContainer, $pallet)
+    $pallet = appendRows(typeContainer, $pallet, "", selectedType)
     $pallet = setMaxHeight($pallet)
 
     collapseAllRows($pallet)
@@ -60,9 +60,9 @@ function clearPallet($pallet) {
   $pallet.find('ul').empty().end().css('width', 'auto')
 }
 
-function appendRows(typeContainer, $pallet, filterText = "") {
+function appendRows(typeContainer, $pallet, filterText = "", selectedType) {
   $pallet.find("ul")
-     .append(new Row(typeContainer, filterText))
+     .append(new Row(typeContainer, filterText, selectedType))
      .end()
 
   setupOnClickEvents(typeContainer, $pallet)
@@ -70,16 +70,16 @@ function appendRows(typeContainer, $pallet, filterText = "") {
 }
 
 function setupOnClickEvents(typeContainer, $pallet) {
-  $pallet.find('.palletRowClassElement')
+  $pallet.find('.textae-editor__type-pallet__group')
     .on('click', function() {
-      if(!($(this).children('.palletRowClassEntryList').is(':visible'))){
-        $('.palletRowClassEntryList').slideUp();
-        $(this).children('.palletRowClassEntryList').slideDown();
+      if(!($(this).children('.textae-editor__type-pallet__entrylist').is(':visible'))){
+        $('.textae-editor__type-pallet__entrylist').slideUp();
+        $(this).children('.textae-editor__type-pallet__entrylist').slideDown();
       } else {
-        $('.palletRowClassEntryList').slideUp();
+        $('.textae-editor__type-pallet__entrylist').slideUp();
       }
     })
-  $pallet.find('.palletRowClassEntry')
+  $pallet.find('.textae-editor__type-pallet__entry')
     .on('click', function() {
       var typeCode = $(this).children('input').attr('label')
       console.log("Clicked on: ")
@@ -96,7 +96,7 @@ function setupOnClickEvents(typeContainer, $pallet) {
 }
 
 function collapseAllRows($pallet) {
-  $.each($pallet.find('.palletRowClassEntryList'), function(i, entry) {
+  $.each($pallet.find('.textae-editor__type-pallet__entrylist'), function(i, entry) {
     var match = $(entry).find('input:checked')
     if (match === undefined || match.length === 0) {
       $(entry).hide()
@@ -105,7 +105,7 @@ function collapseAllRows($pallet) {
 }
 
 function expandAllRows($pallet) {
-  $.each($pallet.find('.palletRowClassEntryList'), function(i, entry) {
+  $.each($pallet.find('.textae-editor__type-pallet__entrylist'), function(i, entry) {
     $(entry).slideDown()
   })
 }
