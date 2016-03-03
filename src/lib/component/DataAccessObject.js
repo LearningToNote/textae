@@ -63,6 +63,13 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
         //success
         console.log("Did load data from the database:")
         console.log(data)
+        if (data.text === undefined || data.text === null || data.text.length === 0) {
+          dataCache.setNewData()
+          toastr.clear()
+          cursorChanger.endWait()
+          toastr.error("Could not load the document :-(")
+          return
+        }
         dataCache.setNewData(data)
         toastr.clear()
         api.emit('load', {
