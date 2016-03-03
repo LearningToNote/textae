@@ -68,7 +68,9 @@ function KeyApiMap(command, presenter, dataAccessObject, history, annotationData
 function IconApiMap(command, presenter, dataAccessObject, history, annotationData, buttonController, updateLineHeight) {
   let showAccess = () => dataAccessObject.showAccess(history.hasAnythingToSave()),
     showSave = () => dataAccessObject.showSave(annotationData.toJson()),
-    saveToHana = () => dataAccessObject.saveToHana(annotationData.toJson())
+    saveToHana = () => dataAccessObject.saveToHana(annotationData.toJson()),
+    predictEntities = () => dataAccessObject.loadEntityPrediction(annotationData.toJson()),
+    predictRelations = () => dataAccessObject.loadRelationPrediction(annotationData.toJson())
 
   return new Map(
     [
@@ -92,7 +94,9 @@ function IconApiMap(command, presenter, dataAccessObject, history, annotationDat
       ['textae.control.button.copy.click', presenter.event.copyEntities],
       ['textae.control.button.paste.click', presenter.event.pasteEntities],
       ['textae.control.button.setting.click', presenter.event.showSettingDialog],
-      ['textae.control.button.line_height.click', updateLineHeight]
+      ['textae.control.button.line_height.click', updateLineHeight],
+      ['textae.control.button.pred_rel.click', predictRelations],
+      ['textae.control.button.pred_ent.click', predictEntities]
     ]
   )
 }

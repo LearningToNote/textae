@@ -21,9 +21,27 @@ var bindEvent = function($target, event, func) {
 
 // A sub component to save and load data.
 module.exports = function(editor, confirmDiscardChangeMessage) {
+  var loadPrediction = function(url, data) {
+    cursorChanger.startWait()
+    toastr.info('', 'Loading...', {timeOut: 0, extendedTimeOut: 0})
+    ajaxAccessor.getAsync(url, function(data) {
+      toastr.clear()
+      cursorChanger.endWait()
+    }, function() {
+      toastr.clear()
+      cursorChanger.endWait()
+      toastr.error("If the error persists, contact the administrator.", "An error occured. Please try again.")
+    })
+  }
   var dataSourceUrl = '',
     cursorChanger = new CursorChanger(editor),
     dataCache = new DataCache(),
+    loadRelationPrediction = function(data) {
+      loadPrediction('blubb', data)
+    },
+    loadEntityPrediction = function(data) {
+      loadPrediction('blubb2', data)
+    },
     getAnnotationFromServer = function(urlToJson) {
       cursorChanger.startWait()
       ajaxAccessor.getAsync(urlToJson, function getAnnotationFromServerSuccess(annotation) {
@@ -309,6 +327,8 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
     showAccess: _.partial(loadSaveDialog.showLoad, editor.editorId),
     showSave: _.partial(loadSaveDialog.showSave, editor.editorId),
     saveToHana: _.partial(loadSaveDialog.saveToHana, editor.editorId),
+    loadRelationPrediction: loadRelationPrediction,
+    loadEntityPrediction: loadEntityPrediction
   })
 
   return api

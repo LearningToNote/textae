@@ -55,6 +55,14 @@
         }]
     }, {
         "list": [{
+            "type": "pred_ent",
+            "title": "Predict Entities"
+        }, {
+            "type": "pred_rel",
+            "title": "Predict Relations"
+        }]
+    }, {
+        "list": [{
             "type": "delete",
             "title": "Delete [D]"
         }]
