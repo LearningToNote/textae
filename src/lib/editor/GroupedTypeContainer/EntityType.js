@@ -18,7 +18,7 @@ var EntityType = function(data) {
         label = jsValue(data["label"]) || name
     }
     return {
-        getLabel: () => label,
+        getLabel: () => { return label },
         setLabel: (newLabel) => label = newLabel,
         getName: function() {
             return name

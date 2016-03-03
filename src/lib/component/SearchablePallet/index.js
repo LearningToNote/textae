@@ -15,23 +15,23 @@ export default function(selectType, selectDefaultType) {
 }
 
 function show($pallet, typeContainer, point, selectedType) {
-  console.log("TypeContainer:")
-  console.log(typeContainer)
   if (typeContainer && typeContainer.getSortedNames().length > 0) {
     $pallet = reuseOldPallet($pallet)
     $pallet = appendRows(typeContainer, $pallet, "", selectedType)
     $pallet = setMaxHeight($pallet)
 
-    collapseAllRows($pallet)
+    let selectedEntry = collapseAllRowsExceptSelected($pallet)
 
     let palletFilterFunction = function(filterText) {
-      console.log("Filtering: " + filterText)
+      if (filterText === undefined || filterText === "") {
+        return
+      }
       clearPallet($pallet)
       appendRows(typeContainer, $pallet, filterText)
       if (filterText.length > 0)
         expandAllRows($pallet)
       else
-        collapseAllRows($pallet)
+        collapseAllRowsExceptSelected($pallet)
     }
     $pallet.filterFunction = palletFilterFunction
     // Move the pallet to mouse.
@@ -40,6 +40,12 @@ function show($pallet, typeContainer, point, selectedType) {
       .show()
     $pallet.find('input[type=text]').val('')
     $pallet.find('input[type=text]').focus()
+    //scroll the selected entry into the visible region
+    //while keeping it at the bottom of the pallet
+    if (selectedEntry !== undefined) {
+      $pallet.animate({scrollTop: selectedEntry.offset().top - $pallet.offset().top
+                                    + $pallet.scrollTop() - $pallet.height() + 30})
+    }
   }
 }
 
@@ -82,26 +88,24 @@ function setupOnClickEvents(typeContainer, $pallet) {
   $pallet.find('.textae-editor__type-pallet__entry')
     .on('click', function() {
       var typeCode = $(this).children('input').attr('label')
-      console.log("Clicked on: ")
-      console.log($(this))
-      console.log("Selected type:")
-      console.log(typeCode)
       var type = typeContainer.getTypeForCode(typeCode)
-      console.log("Got type for code:")
-      console.log(type)
       typeSelection.selectType(type)
       $pallet.hide()
     })
 
 }
 
-function collapseAllRows($pallet) {
+function collapseAllRowsExceptSelected($pallet) {
+  var selectedEntry = undefined
   $.each($pallet.find('.textae-editor__type-pallet__entrylist'), function(i, entry) {
     var match = $(entry).find('input:checked')
     if (match === undefined || match.length === 0) {
       $(entry).hide()
+    } else {
+      selectedEntry = match
     }
   })
+  return selectedEntry
 }
 
 function expandAllRows($pallet) {
