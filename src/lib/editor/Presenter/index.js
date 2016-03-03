@@ -12,6 +12,7 @@ import SelectHandler from './handlers/SelectHandler'
 import ToggleButtonHandler from './handlers/ToggleButtonHandler'
 import ModeButtonHandlers from './handlers/ModeButtonHandlers'
 import enableSaveButtorAtEditable from './enableSaveButtorAtEditable'
+import acceptSelectedElements from './handlers/acceptSelectedElements'
 
 export default function(
   editor,
@@ -94,7 +95,11 @@ export default function(
         selectHandler,
         model.annotationData
       ),
-      acceptSelectedElements: defaultEntityHandler.acceptEntity,
+      acceptSelectedElements: () => acceptSelectedElements(
+        command,
+        model.selectionModel,
+        model.annotationData
+      ),
       createEntity: defaultEntityHandler.createEntity,
       showPallet: typeEditor.showPallet,
       replicate: defaultEntityHandler.replicate,

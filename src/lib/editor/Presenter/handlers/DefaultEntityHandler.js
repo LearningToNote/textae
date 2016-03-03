@@ -25,18 +25,11 @@ var DefaultEntityHandler = function(command, annotationData, selectionModel, mod
       )
 
       emitter.emit('createEntity')
-    },
-    acceptEntityImple = function() {
-      let selectedEntityId = selectionModel.entity.single()
-      let selectedEntity = annotationData.entity.get(selectedEntityId)
-      let createCommand = command.factory.entityCreateCommand({span: selectedEntity.span, type: selectedEntity.type})
-      command.invoke([createCommand])
     }
 
   return _.extend(emitter, {
     replicate: replicateImple,
-    createEntity: createEntityImple,
-    acceptEntity: acceptEntityImple
+    createEntity: createEntityImple
   })
 }
 
