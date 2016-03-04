@@ -1,8 +1,10 @@
 
-function groupBy(array, selectionFunction) {
+function groupBy(array, selectionFunction, defaultValue) {
+    defaultValue = defaultValue || 0
     var groups = {}
     array.forEach( function(element) {
-        var key = String(selectionFunction(element))
+        var key = selectionFunction(element) || defaultValue
+        key = String(key)
         groups[key] = groups[key] || []
         groups[key].push(element)
     })
