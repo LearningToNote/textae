@@ -24,23 +24,45 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
   var loadPrediction = function(url, data) {
     cursorChanger.startWait()
     toastr.info('', 'Loading...', {timeOut: 0, extendedTimeOut: 0})
-    ajaxAccessor.getAsync(url, function(data) {
+    console.log("POSTing data", data)
+    ajaxAccessor.post(url, data, function(data) {
+      console.log('received prediction data', data)
+      api.emit('load', {
+          annotation: data,
+          source: "Database"
+        })
       toastr.clear()
       cursorChanger.endWait()
     }, function() {
       toastr.clear()
       cursorChanger.endWait()
       toastr.error("If the error persists, contact the administrator.", "An error occured. Please try again.")
+    }, function() {
+      cursorChanger.endWait()
     })
   }
   var dataSourceUrl = '',
     cursorChanger = new CursorChanger(editor),
     dataCache = new DataCache(),
     loadRelationPrediction = function(data) {
-      loadPrediction('blubb', data)
+      let shouldPredictEntities = false,
+          url = 'https://' + window.location.hostname + ':8080/predict'
+      var tasks = '['
+      if (shouldPredictEntities) {
+        tasks += 'entities, '
+      }
+      tasks += 'relations]'
+      let postData = {'tasks': tasks,
+                      'document_id': JSON.parse(data).sourceid,
+                      'current_state': data}
+      loadPrediction(url, JSON.stringify(postData))
     },
     loadEntityPrediction = function(data) {
-      loadPrediction('blubb2', data)
+      let url = 'https://' + window.location.hostname + ':8080/predict'
+      let postData = {'tasks': '[entities]',
+                      'document_id': JSON.parse(data).sourceid,
+                      'current_state': data}
+      loadPrediction(url, JSON.stringify(data))
     },
     getAnnotationFromServer = function(urlToJson) {
       cursorChanger.startWait()
