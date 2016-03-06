@@ -1,5 +1,5 @@
 
-var EntityType = function(data) {
+ function EntityType(data) {
     let NO_GROUP = "No Group",
         NO_ID = -1,
         NO_NAME = "undefined"
@@ -56,10 +56,7 @@ function jsValue(variable) {
     return variable
 }
 
-// EntityType.prototype.toString = function() {
-//     return $(this).code
-// };
-
-module.exports = function(data) {
-    return EntityType(data)
-}
+module.exports = EntityType
+// function(data) {
+//     return (data)
+// }

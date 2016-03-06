@@ -1,4 +1,5 @@
 import getNextId from './getNextId'
+import EntityType from '../../../GroupedTypeContainer/EntityType'
 
 var ERROR_MESSAGE = 'Set the mappingFunction by the constructor to use the method "ModelContainer.setSource".'
 
@@ -74,6 +75,8 @@ module.exports = function(emitter, prefix, mappingFunction, idPrefix) {
     },
     changeLabel: function(id, newLabel) {
       var model = get(id)
+      //Yes, this is an ugly hack :-(
+      model.type = new EntityType(model.type.toJSON())
       model.type.setLabel(newLabel)
       console.log("Emitting: " + prefix + '.change')
       emitter.emit(prefix + '.change', model)
