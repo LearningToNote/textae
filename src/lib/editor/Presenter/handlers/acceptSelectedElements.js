@@ -8,20 +8,22 @@ module.exports = function(command, selectionModel, annotationData) {
             return annotationData.entity.get(entityId).userId === 0 ||
                     annotationData.entity.get(entityId).userId === undefined
         }).length === 0
-    }, findMatchingEntityOfCurrentUser = function(comparisonEntityId) {
-        let spanId = annotationData.entity.get(comparisonEntityId).span,
-            relatedEntities = annotationData.span.get(spanId).getEntities(),
-            comparisonEntity = annotationData.entity.get(comparisonEntityId)
+    }, findMatchingEntitesOfCurrentUser = function(comparisonEntityId) {
+        var result = []
+        let comparisonEntity = annotationData.entity.get(comparisonEntityId),
+            relatedEntities = annotationData.span.get(comparisonEntity.span).getEntities()
+
         for (var i = relatedEntities.length - 1; i >= 0; i--) {
             let currentId = relatedEntities[i],
                 currentEntity = annotationData.entity.get(currentId)
-            if (currentId === comparisonEntityId ||
-                (currentEntity.userId !== 0 && currentEntity.userId !== undefined) ||
-                currentEntity.type.getCode() !== comparisonEntity.type.getCode()) {
-                continue
+            if (currentId !== comparisonEntityId &&
+                (currentEntity.userId === 0 || currentEntity.userId === undefined) &&
+                currentEntity.type.getCode() === comparisonEntity.type.getCode() &&
+                currentEntity.type.getLabel() === comparisonEntity.type.getLabel()) {
+                result.push(currentId)
             }
-            return currentId
         }
+        return result
     }, removeAcceptedEntitiesFromPredictor = function(command, acceptedEntities, acceptedRelations) {
         // currently only a fancy way to not remove entities with relations.
         // if it would be possible to accept entities and relations at the same time,
@@ -53,35 +55,31 @@ module.exports = function(command, selectionModel, annotationData) {
             removeCommands.push(command.factory.relationRemoveCommand(currentRelation))
         }
         command.invoke(removeCommands)
-    }, createCreateCommandsForEntities = function(entityIds, annotationData) {
+    }, createCreateCommandsForEntities = function(entityIds) {
         var result = []
         for (var i = toBeCopiedEntityIds.length - 1; i >= 0; i--) {
             let currentEntity = annotationData.entity.get(toBeCopiedEntityIds[i]),
-                entitiesAtSpan = annotationData.span.get(currentEntity.span).getEntities()
-                                        .map((id) => annotationData.entity.get(id)),
-                eAtSpanOfCurrentUser = entitiesAtSpan.filter((e) => e.userId === 0 || e.userId === undefined),
-                eAtSpanOfCurrentUserWithCorrectType = eAtSpanOfCurrentUser.filter((e) => {
-                    return e.type.getCode() === currentEntity.type.getCode()
-                        && e.type.getLabel() === currentEntity.type.getLabel()})
+                existingMatchingEntities = findMatchingEntitesOfCurrentUser(toBeCopiedEntityIds[i])
 
-            if (eAtSpanOfCurrentUserWithCorrectType.length === 0) {
+            if (existingMatchingEntities.length === 0) {
                 let createCommand = command.factory.entityCreateCommand({span: currentEntity.span, type: currentEntity.type})
                 result.push(createCommand)
             }
         }
         return result
-    }, createCreateCommandsForRelations = function(relationIds, annotationData) {
+    }, createCreateCommandsForRelations = function(relationIds) {
         var result = []
         for (var i = toBeCopiedRelationIds.length - 1; i >= 0; i--) {
             let currentRelationId = toBeCopiedRelationIds[i],
                 currentRelation = annotationData.relation.get(currentRelationId),
                 originalObj = currentRelation.obj,
                 originalSubj = currentRelation.subj,
-                newObj = findMatchingEntityOfCurrentUser(originalObj),
-                newSubj = findMatchingEntityOfCurrentUser(originalSubj),
-                createRelationCommand = command.factory.relationCreateCommand({
-                                            subj: newSubj,
-                                            obj: newObj,
+                objCandidates = findMatchingEntitesOfCurrentUser(originalObj),
+                subjCandidates = findMatchingEntitesOfCurrentUser(originalSubj)
+
+            let createRelationCommand = command.factory.relationCreateCommand({
+                                            subj: subjCandidates[0],
+                                            obj: objCandidates[0],
                                             type: currentRelation.type
                                           })
             result.push(createRelationCommand)
@@ -114,13 +112,13 @@ module.exports = function(command, selectionModel, annotationData) {
             {progressBar: true, closeButton: true})
         return
     }
-    createEntityCommands = createCreateCommandsForEntities(toBeCopiedEntityIds, annotationData)
+    createEntityCommands = createCreateCommandsForEntities(toBeCopiedEntityIds)
     if (createEntityCommands.length > 0) {
         command.invoke(createEntityCommands)
-        createRelationCommands = createCreateCommandsForRelations(toBeCopiedRelationIds, annotationData)
-        if (createRelationCommands.length > 0) {
-            command.invoke(createRelationCommands)
-        }
+    }
+    createRelationCommands = createCreateCommandsForRelations(toBeCopiedRelationIds)
+    if (createRelationCommands.length > 0) {
+        command.invoke(createRelationCommands)
     }
     removeAcceptedRelationsFromPredictor(command, toBeCopiedRelationIds)
     removeAcceptedEntitiesFromPredictor(command, toBeCopiedEntityIds)
