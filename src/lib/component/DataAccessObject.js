@@ -21,45 +21,51 @@ var bindEvent = function($target, event, func) {
 
 // A sub component to save and load data.
 module.exports = function(editor, confirmDiscardChangeMessage) {
-  var loadPrediction = function(url, data) {
-    cursorChanger.startWait()
-    toastr.info('', 'Loading...', {timeOut: 0, extendedTimeOut: 0})
-    console.log("POSTing data", data)
-    ajaxAccessor.post(url, data, function(data) {
-      console.log('received prediction data', data)
-      api.emit('load', {
-          annotation: data,
-          source: "Database"
-        })
-      toastr.clear()
-      cursorChanger.endWait()
-    }, function() {
-      toastr.clear()
-      cursorChanger.endWait()
-      toastr.error("If the error persists, contact the administrator.", "An error occured. Please try again.")
-    }, function() {
-      cursorChanger.endWait()
-    })
-  }
+  var task = undefined,
+    setTask = function(newTask) {
+      task = newTask
+    },
+    loadPrediction = function(url, data) {
+      cursorChanger.startWait()
+      toastr.info('', 'Loading...', {timeOut: 0, extendedTimeOut: 0})
+      console.log("POSTing data", data)
+      ajaxAccessor.post(url, data, function(data) {
+        console.log('received prediction data', data)
+        api.emit('load', {
+            annotation: data,
+            source: "Database"
+          })
+        toastr.clear()
+        cursorChanger.endWait()
+      }, function() {
+        toastr.clear()
+        cursorChanger.endWait()
+        toastr.error("If the error persists, contact the administrator.", "An error occured. Please try again.")
+      }, function() {
+        cursorChanger.endWait()
+      })
+    }
   var dataSourceUrl = '',
     cursorChanger = new CursorChanger(editor),
     dataCache = new DataCache(),
     loadRelationPrediction = function(data) {
       let shouldPredictEntities = false,
           url = 'https://' + window.location.hostname + ':8080/predict'
-      var tasks = '['
+      var jobs = '['
       if (shouldPredictEntities) {
-        tasks += 'entities, '
+        jobs += 'entities, '
       }
-      tasks += 'relations]'
-      let postData = {'tasks': tasks,
+      jobs += 'relations]'
+      let postData = {'task_id': task,
+                      'jobs': jobs,
                       'document_id': JSON.parse(data).sourceid,
                       'current_state': data}
       loadPrediction(url, JSON.stringify(postData))
     },
     loadEntityPrediction = function(data) {
       let url = 'https://' + window.location.hostname + ':8080/predict'
-      let postData = {'tasks': '[entities]',
+      let postData = {'task_id': task,
+                      'jobs': '[entities]',
                       'document_id': JSON.parse(data).sourceid,
                       'current_state': data}
       loadPrediction(url, JSON.stringify(data))
@@ -357,7 +363,8 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
     showSave: _.partial(loadSaveDialog.showSave, editor.editorId),
     saveToHana: _.partial(loadSaveDialog.saveToHana, editor.editorId),
     loadRelationPrediction: loadRelationPrediction,
-    loadEntityPrediction: loadEntityPrediction
+    loadEntityPrediction: loadEntityPrediction,
+    setTask: setTask
   })
 
   return api

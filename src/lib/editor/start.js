@@ -83,6 +83,9 @@ function loadAnnotation(spanConfig, typeContainer, annotationData, statusBar, pa
       dataAccessObject.getAnnotationFromServer(annotation.url)
     } else if (params["hana-document"]) {
       dataAccessObject.getAnnotationFromDatabase(params["hana-document"])
+      if (params["tid"]) {
+        dataAccessObject.setTask(params["tid"])
+      }
     }
   }
 }
