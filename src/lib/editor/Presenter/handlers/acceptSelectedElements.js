@@ -12,7 +12,6 @@ module.exports = function(command, selectionModel, annotationData) {
         let spanId = annotationData.entity.get(comparisonEntityId).span,
             relatedEntities = annotationData.span.get(spanId).getEntities(),
             comparisonEntity = annotationData.entity.get(comparisonEntityId)
-        console.log("Related entities:", comparisonEntityId, relatedEntities)
         for (var i = relatedEntities.length - 1; i >= 0; i--) {
             let currentId = relatedEntities[i],
                 currentEntity = annotationData.entity.get(currentId)
@@ -23,6 +22,37 @@ module.exports = function(command, selectionModel, annotationData) {
             }
             return currentId
         }
+    }, removeAcceptedEntitiesFromPredictor = function(command, acceptedEntities, acceptedRelations) {
+        // currently only a fancy way to not remove entities with relations.
+        // if it would be possible to accept entities and relations at the same time,
+        // only entites whose relations are accepted as well are being deleted
+        let toBeRemovedEntities = acceptedEntities.filter((e) => {
+                if (annotationData.entity.get(e).userId === -1) {
+                    var relations = annotationData.entity.assosicatedRelations(e)
+                    for (var i = relations.length - 1; i >= 0; i--) {
+                        if (acceptedRelations.indexOf(relations[i]) === -1) {
+                            return false
+                        }
+                    }
+                    return true
+                }
+                return false
+            }),
+            removeCommand = command.factory.entityRemoveCommand(toBeRemovedEntities)
+        command.invoke(removeCommand)
+    }, removeAcceptedRelationsFromPredictor = function(command, acceptedRelations) {
+        let toBeRemovedRelations = acceptedRelations.filter(function(id) {
+            let relation = annotationData.relation.get(id),
+                objEntity = annotationData.entity.get(relation.obj),
+                subjEntity = annotationData.entity.get(relation.subj)
+            return objEntity.userId == -1 && subjEntity.userId == -1
+        })
+        var removeCommands = []
+        for (var i = toBeRemovedRelations.length - 1; i >= 0; i--) {
+            let currentRelation = toBeRemovedRelations[i]
+            removeCommands.push(command.factory.relationRemoveCommand(currentRelation))
+        }
+        command.invoke(removeCommands)
     }
     let entityIds = selectionModel.entity.all(),
         spanIds = selectionModel.span.all(),
@@ -48,7 +78,6 @@ module.exports = function(command, selectionModel, annotationData) {
             {progressBar: true, closeButton: true})
         return
     }
-    console.log("To be copied Ids:", toBeCopiedEntityIds, toBeCopiedRelationIds)
     for (var i = toBeCopiedEntityIds.length - 1; i >= 0; i--) {
         let currentEntity = annotationData.entity.get(toBeCopiedEntityIds[i]),
             createCommand = command.factory.entityCreateCommand({span: currentEntity.span, type: currentEntity.type})
@@ -74,4 +103,6 @@ module.exports = function(command, selectionModel, annotationData) {
             command.invoke(createRelationCommands)
         }
     }
+    removeAcceptedRelationsFromPredictor(command, toBeCopiedRelationIds)
+    removeAcceptedEntitiesFromPredictor(command, toBeCopiedEntityIds)
 }
