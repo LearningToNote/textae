@@ -42,14 +42,12 @@ export default function(editor, dataAccessObject, history, buttonController, mod
   dataAccessObject
     .on('load', data => {
       var legend = $('body').find(".textae-editor__legend")[0]
-      if (legend === undefined) {
-        console.log("CREATING NEW LEGEND")
-        legend = new UserLegend(data.annotation.config.users, dataAccessObject, model.annotationData)
-        $('body').prepend(legend)
-        legend.draggable()
-      } else {
-        console.log("FOUND LEGEND", legend)
+      if (legend !== undefined) {
+        legend.remove()
       }
+      legend = new UserLegend(data.annotation.config.users, dataAccessObject, model.annotationData)
+      $('body').prepend(legend)
+      legend.draggable()
       setAnnotation(spanConfig, typeContainer, model.annotationData, params.config, data.annotation)
       statusBar.status(data.source)
     })
