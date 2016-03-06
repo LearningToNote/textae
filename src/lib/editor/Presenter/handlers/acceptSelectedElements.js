@@ -75,7 +75,30 @@ module.exports = function(command, selectionModel, annotationData) {
                 originalObj = currentRelation.obj,
                 originalSubj = currentRelation.subj,
                 objCandidates = findMatchingEntitesOfCurrentUser(originalObj),
-                subjCandidates = findMatchingEntitesOfCurrentUser(originalSubj)
+                subjCandidates = findMatchingEntitesOfCurrentUser(originalSubj),
+                shouldCreate = true
+
+            for (var i = objCandidates.length - 1; i >= 0; i--) {
+                let currentObjId = objCandidates[i],
+                    objRelationIds = annotationData.entity.assosicatedRelations(currentObjId)
+                for (var i = objRelationIds.length - 1; i >= 0; i--) {
+                    let currentObjRelation = annotationData.relation.get(objRelationIds[i])
+                    if (subjCandidates.indexOf(currentObjRelation.subj) > -1) {
+                        if (currentObjRelation.type.getCode() === currentRelation.type.getCode()
+                            && currentObjRelation.type.getLabel() === currentRelation.type.getLabel()) {
+                            shouldCreate = false
+                            break
+                        }
+                    }
+                    if (!shouldCreate) {
+                        break
+                    }
+                }
+            }
+
+            if (!shouldCreate) {
+                break
+            }
 
             let createRelationCommand = command.factory.relationCreateCommand({
                                             subj: subjCandidates[0],
