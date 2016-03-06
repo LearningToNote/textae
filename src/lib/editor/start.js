@@ -103,6 +103,11 @@ function setAnnotation(spanConfig, typeContainer, annotationData, config, annota
 function setConfigInAnnotation(spanConfig, typeContainer, annotation) {
   if (annotation.config !== undefined && annotation.config.users !== undefined) {
     var cssString = ""
+    let currentUserInfo = annotation.config.users["0"]
+    if (currentUserInfo !== undefined) {
+      cssString += ".entity_user_undefined {\n\t"
+      cssString += "background-color: " + currentUserInfo.color + "\n}\n"
+    }
     for (var userId in annotation.config.users) {
       if (annotation.config.users.hasOwnProperty(userId)) {
         var userInfo = annotation.config.users[userId]

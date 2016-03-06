@@ -90,9 +90,6 @@ function createEmptyTypeDomElement(namespace, typeContainer, spanId, type, userI
   let $typeLabel = $('<div>')
     .addClass('textae-editor__type-label')
     .addClass('entity_user_' + userId)
-  if (userId == undefined) {
-    $typeLabel.css({'background-color': typeContainer.entity.getColor(type)})
-  }
 
   $typeLabel[0].setAttribute('tabindex', 0)
 
