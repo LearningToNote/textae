@@ -26,7 +26,7 @@ export default function(command, selectionModel, selectHandler, annotationData) 
 
 function isFromOtherUser(annotationData, entityId) {
   let userId = annotationData.entity.get(entityId).userId
-  return userId !== undefined && userId !== 0
+  return userId !== undefined && userId !== 0 && userId !== -1
 }
 
 function relationFromOtherUser(annotationData, relationId) {
