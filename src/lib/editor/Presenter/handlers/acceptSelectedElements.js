@@ -53,7 +53,43 @@ module.exports = function(command, selectionModel, annotationData) {
             removeCommands.push(command.factory.relationRemoveCommand(currentRelation))
         }
         command.invoke(removeCommands)
+    }, createCreateCommandsForEntities = function(entityIds, annotationData) {
+        var result = []
+        for (var i = toBeCopiedEntityIds.length - 1; i >= 0; i--) {
+            let currentEntity = annotationData.entity.get(toBeCopiedEntityIds[i]),
+                entitiesAtSpan = annotationData.span.get(currentEntity.span).getEntities()
+                                        .map((id) => annotationData.entity.get(id)),
+                eAtSpanOfCurrentUser = entitiesAtSpan.filter((e) => e.userId === 0 || e.userId === undefined),
+                eAtSpanOfCurrentUserWithCorrectType = eAtSpanOfCurrentUser.filter((e) => {
+                    return e.type.getCode() === currentEntity.type.getCode()
+                        && e.type.getLabel() === currentEntity.type.getLabel()})
+
+            if (eAtSpanOfCurrentUserWithCorrectType.length === 0) {
+                let createCommand = command.factory.entityCreateCommand({span: currentEntity.span, type: currentEntity.type})
+                result.push(createCommand)
+            }
+        }
+        return result
+    }, createCreateCommandsForRelations = function(relationIds, annotationData) {
+        var result = []
+        for (var i = toBeCopiedRelationIds.length - 1; i >= 0; i--) {
+            let currentRelationId = toBeCopiedRelationIds[i],
+                currentRelation = annotationData.relation.get(currentRelationId),
+                originalObj = currentRelation.obj,
+                originalSubj = currentRelation.subj,
+                newObj = findMatchingEntityOfCurrentUser(originalObj),
+                newSubj = findMatchingEntityOfCurrentUser(originalSubj),
+                createRelationCommand = command.factory.relationCreateCommand({
+                                            subj: newSubj,
+                                            obj: newObj,
+                                            type: currentRelation.type
+                                          })
+            result.push(createRelationCommand)
+        }
+        return result
     }
+
+
     let entityIds = selectionModel.entity.all(),
         spanIds = selectionModel.span.all(),
         entityIdsOfSpans = _.flatten(spanIds.map((id) => { return annotationData.span.get(id).getEntities() })),
@@ -78,36 +114,10 @@ module.exports = function(command, selectionModel, annotationData) {
             {progressBar: true, closeButton: true})
         return
     }
-    for (var i = toBeCopiedEntityIds.length - 1; i >= 0; i--) {
-        let currentEntity = annotationData.entity.get(toBeCopiedEntityIds[i]),
-            entitiesAtSpan = annotationData.span.get(currentEntity.span).getEntities()
-                                    .map((id) => annotationData.entity.get(id)),
-            eAtSpanOfCurrentUser = entitiesAtSpan.filter((e) => e.userId === 0 || e.userId === undefined),
-            eAtSpanOfCurrentUserWithCorrectType = eAtSpanOfCurrentUser.filter((e) => {
-                return e.type.getCode() === currentEntity.type.getCode()
-                    && e.type.getLabel() === currentEntity.type.getLabel()})
-
-        if (eAtSpanOfCurrentUserWithCorrectType.length === 0) {
-            let createCommand = command.factory.entityCreateCommand({span: currentEntity.span, type: currentEntity.type})
-            createEntityCommands.push(createCommand)
-        }
-    }
+    createEntityCommands = createCreateCommandsForEntities(toBeCopiedEntityIds, annotationData)
     if (createEntityCommands.length > 0) {
         command.invoke(createEntityCommands)
-        for (var i = toBeCopiedRelationIds.length - 1; i >= 0; i--) {
-            let currentRelationId = toBeCopiedRelationIds[i],
-                currentRelation = annotationData.relation.get(currentRelationId),
-                originalObj = currentRelation.obj,
-                originalSubj = currentRelation.subj,
-                newObj = findMatchingEntityOfCurrentUser(originalObj),
-                newSubj = findMatchingEntityOfCurrentUser(originalSubj),
-                createRelationCommand = command.factory.relationCreateCommand({
-                                            subj: newSubj,
-                                            obj: newObj,
-                                            type: currentRelation.type
-                                          })
-            createRelationCommands.push(createRelationCommand)
-        }
+        createRelationCommands = createCreateCommandsForRelations(toBeCopiedRelationIds, annotationData)
         if (createRelationCommands.length > 0) {
             command.invoke(createRelationCommands)
         }
