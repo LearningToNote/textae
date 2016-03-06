@@ -65,7 +65,7 @@ function DoCreate(model, command, typeContainer, spanManipulater, isDetectDelimi
   }
 
   const commands = [command.factory.spanCreateCommand(
-    typeContainer.entity.getDefaultType(), {
+    [typeContainer.entity.getDefaultType()], {
       begin: newSpan.begin,
       end: newSpan.end
     }
@@ -74,7 +74,7 @@ function DoCreate(model, command, typeContainer, spanManipulater, isDetectDelimi
   if (isReplicateAuto && newSpan.end - newSpan.begin <= BLOCK_THRESHOLD) {
     commands.push(
       command.factory.spanReplicateCommand(
-        typeContainer.entity.getDefaultType(), {
+        [typeContainer.entity.getDefaultType()], {
           begin: newSpan.begin,
           end: newSpan.end
         },

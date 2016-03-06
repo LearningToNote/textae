@@ -13,14 +13,20 @@ var invokeCommand = require('./invokeCommand'),
 module.exports = function(editor, model, history) {
   var spanCreateCommand = (span) => new CreateCommand(model, 'span', true, span),
     entityCreateCommand = (entity) => new CreateCommand(model, 'entity', true, entity),
-    spanAndDefaultEntryCreateCommand = function(type, span) {
+    spanAndDefaultEntryCreateCommand = function(types, span) {
       var id = idFactory.makeSpanId(editor, span),
         createSpan = spanCreateCommand(span),
-        createEntity = entityCreateCommand({
-          span: id,
-          type: type
-        }),
-        subCommands = [createSpan, createEntity]
+        createEntityCommands = [],
+        subCommands = [createSpan]
+
+        for (var i = types.length - 1; i >= 0; i--) {
+          let type = types[i],
+          createCommand = entityCreateCommand({
+                            span: id,
+                            type: type
+                          })
+          subCommands.push(createCommand)
+        }
 
       return {
         execute: function() {
@@ -28,8 +34,8 @@ module.exports = function(editor, model, history) {
         }
       }
     },
-    spanReplicateCommand = function(type, span, detectBoundaryFunc) {
-      var createSpan = _.partial(spanAndDefaultEntryCreateCommand, type),
+    spanReplicateCommand = function(types, span, detectBoundaryFunc) {
+      var createSpan = _.partial(spanAndDefaultEntryCreateCommand, types),
         subCommands = getReplicationSpans(model.annotationData, span, detectBoundaryFunc)
         .map(createSpan)
 
