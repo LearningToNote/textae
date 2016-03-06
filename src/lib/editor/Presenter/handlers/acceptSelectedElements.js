@@ -80,8 +80,17 @@ module.exports = function(command, selectionModel, annotationData) {
     }
     for (var i = toBeCopiedEntityIds.length - 1; i >= 0; i--) {
         let currentEntity = annotationData.entity.get(toBeCopiedEntityIds[i]),
-            createCommand = command.factory.entityCreateCommand({span: currentEntity.span, type: currentEntity.type})
-        createEntityCommands.push(createCommand)
+            entitiesAtSpan = annotationData.span.get(currentEntity.span).getEntities()
+                                    .map((id) => annotationData.entity.get(id)),
+            eAtSpanOfCurrentUser = entitiesAtSpan.filter((e) => e.userId === 0 || e.userId === undefined),
+            eAtSpanOfCurrentUserWithCorrectType = eAtSpanOfCurrentUser.filter((e) => {
+                return e.type.getCode() === currentEntity.type.getCode()
+                    && e.type.getLabel() === currentEntity.type.getLabel()})
+
+        if (eAtSpanOfCurrentUserWithCorrectType.length === 0) {
+            let createCommand = command.factory.entityCreateCommand({span: currentEntity.span, type: currentEntity.type})
+            createEntityCommands.push(createCommand)
+        }
     }
     if (createEntityCommands.length > 0) {
         command.invoke(createEntityCommands)
