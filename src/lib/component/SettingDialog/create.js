@@ -7,7 +7,7 @@ const CONTENT = `
     <div class="textae-editor__setting-dialog">
         <div>
             <label class="textae-editor__setting-dialog__label">Type Gap</label>
-            <input type="number" class="textae-editor__setting-dialog__type-gap type-gap" step="1" min="0" max="5">
+            <input type="number" class="textae-editor__setting-dialog__type-gap type-gap" step="0.5" min="0" max="5">
         </div>
         <div>
             <label class="textae-editor__setting-dialog__label">Line Height</label>
@@ -17,15 +17,26 @@ const CONTENT = `
     </div>
 `
 
-export default function(editor, displayInstance) {
-  let $content = $(CONTENT)
+export default function(editor, displayInstance, userPreferences) {
+  let $content = $(CONTENT),
+      checkbox = getCheckBox(userPreferences)
 
-  bind($content, editor, displayInstance)
+  $content.append(checkbox)
+  bind($content, editor, displayInstance, userPreferences)
 
   return $content
 }
 
-function bind($content, editor, displayInstance) {
+function getCheckBox(userPreferences) {
+  var text = '<div><input type="checkbox" name="checkbox" id="use_user_entities_checkbox" value="value" '
+  if (userPreferences.useUserEntities) {
+    text += 'checked'
+  }
+  text += '/><label for="use_user_entities_checkbox">Use your entities for prediction</label></div>'
+  return text
+}
+
+function bind($content, editor, displayInstance, userPreferences) {
   bindChangeTypeGap(
       $content,
       editor,
@@ -36,6 +47,11 @@ function bind($content, editor, displayInstance) {
       $content,
       editor
   )
+
+  let checkbox = $content.find('#use_user_entities_checkbox')
+  checkbox.click(function() {
+    userPreferences.setUseUserEntities($(this).is(':checked'))
+  })
 }
 
 function bindChangeTypeGap($content, editor, displayInstance) {

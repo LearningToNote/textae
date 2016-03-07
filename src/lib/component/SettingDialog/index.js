@@ -2,9 +2,9 @@ import GetEditorDialog from '../dialog/GetEditorDialog'
 import create from './create'
 import update from './update'
 
-export default function(editor, displayInstance) {
+export default function(editor, displayInstance, userPreferences) {
   // Update values after creating a dialog because the dialog is re-used.
-  let $content = create(editor, displayInstance),
+  let $content = create(editor, displayInstance, userPreferences),
     $dialog = appendToDialog(
       $content, editor
     )

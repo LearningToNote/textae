@@ -2,6 +2,7 @@ const CONFIRM_DISCARD_CHANGE_MESSAGE = 'There is a change that has not been save
 
 import Observable from 'observ'
 import DataAccessObject from '../component/DataAccessObject'
+import Preferences from '../component/Preferences'
 import ButtonController from '../buttonModel/ButtonController'
 import Writable from '../buttonModel/Writable'
 // model manages data objects.
@@ -18,8 +19,9 @@ export default function() {
       // clipBoard has entity type.
       clipBoard: []
     },
+    userPreferences = new Preferences(),
     buttonController = new ButtonController(this, model, clipBoard),
-    dataAccessObject = new DataAccessObject(this, CONFIRM_DISCARD_CHANGE_MESSAGE)
+    dataAccessObject = new DataAccessObject(this, CONFIRM_DISCARD_CHANGE_MESSAGE, userPreferences)
 
   let writable = new Writable()
 
@@ -41,7 +43,8 @@ export default function() {
       buttonController,
       model,
       clipBoard,
-      writable
+      writable,
+      userPreferences
     )
   }
 

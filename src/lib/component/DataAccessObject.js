@@ -20,7 +20,7 @@ var bindEvent = function($target, event, func) {
   }
 
 // A sub component to save and load data.
-module.exports = function(editor, confirmDiscardChangeMessage) {
+module.exports = function(editor, confirmDiscardChangeMessage, userPreferences) {
   var task = undefined,
     setTask = function(newTask) {
       task = newTask
@@ -49,7 +49,7 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
     cursorChanger = new CursorChanger(editor),
     dataCache = new DataCache(),
     loadRelationPrediction = function(data) {
-      let shouldPredictEntities = false,
+      let shouldPredictEntities = !userPreferences.useUserEntities,
           url = 'https://' + window.location.hostname + ':8080/predict'
       var jobs = '['
       if (shouldPredictEntities) {

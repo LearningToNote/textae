@@ -24,7 +24,8 @@ export default function(
   buttonController,
   typeGap,
   typeContainer,
-  writable
+  writable,
+  userPreferences
 ) {
   let typeEditor = new TypeEditor(
       editor,
@@ -77,7 +78,8 @@ export default function(
     ),
     showSettingDialog = new SettingDialog(
       editor,
-      displayInstance
+      displayInstance,
+      userPreferences
     ),
     editorSelected = () => {
       typeEditor.hideDialogs()

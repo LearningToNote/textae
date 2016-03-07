@@ -12,7 +12,7 @@ import APIs from './APIs'
 import calculateLineHeight from './calculateLineHeight'
 import UserLegend from '../component/UserLegend'
 
-export default function(editor, dataAccessObject, history, buttonController, model, clipBoard, writable) {
+export default function(editor, dataAccessObject, history, buttonController, model, clipBoard, writable, userPreferences) {
   let params = getParams(editor),
     spanConfig = new SpanConfig(),
     // Users can edit model only via commands.
@@ -30,7 +30,8 @@ export default function(editor, dataAccessObject, history, buttonController, mod
       buttonController,
       typeGap,
       typeContainer,
-      writable
+      writable,
+      userPreferences
     )
 
   view.init(editor, buttonController, typeGap, typeContainer, writable)
