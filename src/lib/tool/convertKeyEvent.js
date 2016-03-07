@@ -8,7 +8,7 @@ const controlKeyEventMap = new Map([
 ])
 
 export default function convertKeyEvent(keyCode) {
-  if (65 <= keyCode && keyCode <= 90) {
+  if ((48 <= keyCode && keyCode <= 57) || (65 <= keyCode && keyCode <= 90)) {
     // From a to z, convert 'A' to 'Z'
     return String.fromCharCode(keyCode)
   } else if (controlKeyEventMap.has(keyCode)) {

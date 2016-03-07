@@ -20,6 +20,9 @@ function KeyApiMap(command, presenter, dataAccessObject, history, annotationData
     saveToHana = () => dataAccessObject.saveToHana(annotationData.toJson())
 
   return new Map([
+    ['1', presenter.event.toViewMode],
+    ['2', presenter.event.toTermMode],
+    ['3', presenter.event.toRelationMode],
     ['A', presenter.event.acceptSelectedElements],
     ['B', presenter.event.toggleDetectBoundaryMode],
     ['D', presenter.event.removeSelectedElements],
