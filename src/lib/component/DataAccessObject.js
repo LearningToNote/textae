@@ -68,7 +68,7 @@ module.exports = function(editor, confirmDiscardChangeMessage) {
                       'jobs': '[entities]',
                       'document_id': JSON.parse(data).sourceid,
                       'current_state': data}
-      loadPrediction(url, JSON.stringify(data))
+      loadPrediction(url, JSON.stringify(postData))
     },
     getAnnotationFromServer = function(urlToJson) {
       cursorChanger.startWait()
