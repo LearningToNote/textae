@@ -1,24 +1,24 @@
-TextAE
-======
+# TextAI
 
-*An embeddable, web-based visual editor of text annotation*
+## Requirements
 
-
-homepage
---------
-
-http://textae.pubannotation.org/
+- bower
+- npm
+- nodeJS 4.3.2
+- install additional requirements using `npm install && bower install`
 
 
-Contributors (so far)
----------------------
+------------
+
+#### Based on [TextAE](http://textae.pubannotation.org/)
+
+##### Contributors (so far)
 
 - Jin-Dong Kim
 - Yue Wang
 - Shigeru Nakajima
 
 
-License
--------
+##### License
 
 Released under [MIT license](http://opensource.org/licenses/MIT).
