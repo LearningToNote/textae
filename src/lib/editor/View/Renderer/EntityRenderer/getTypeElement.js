@@ -5,7 +5,7 @@ import getTypeDom from '../getTypeDom'
 
 // render type unless exists.
 export default function(namespace, typeContainer, gridRenderer, spanId, type, userId) {
-  let $type = getTypeDom(spanId, type)
+  let $type = getTypeDom(spanId, type, userId)
   if ($type.length === 0) {
     $type = createEmptyTypeDomElement(namespace, typeContainer, spanId, type, userId)
     getGrid(gridRenderer, spanId).appendChild($type[0])
@@ -79,7 +79,7 @@ function setLabelName(typeLabel, namespace, typeContainer, type) {
 
 // A Type element has an entity_pane elment that has a label and will have entities.
 function createEmptyTypeDomElement(namespace, typeContainer, spanId, type, userId) {
-  let typeId = idFactory.makeTypeId(spanId, type)
+  let typeId = idFactory.makeTypeId(spanId, type, userId)
 
   // The EntityPane will have entities.
   let $entityPane = $('<div>')

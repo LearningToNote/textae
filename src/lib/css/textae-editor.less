@@ -1,7 +1,7 @@
 @acitveColor : #f2ffff;
 @baseColor: rgb(130, 220, 140);
 @border: fade(@baseColor, 80%);
-@selected: red;
+@selected: #3c783c;
 
 .active() {
     background-color: @acitveColor;
@@ -194,6 +194,10 @@
     &__type:hover &__type-label.ui-selected {
         box-shadow: 0 0 0 2pt @selected;
         z-index: 4;
+    }
+    &__type-label.undefined_type {
+        color: #a21403;
+        border: 2px solid #a21403;
     }
     &__entity-pane {
         line-height: normal;

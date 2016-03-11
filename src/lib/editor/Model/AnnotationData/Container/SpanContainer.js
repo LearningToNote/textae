@@ -33,7 +33,7 @@ export default function(editor, emitter, paragraph) {
               return spanId === entity.span
             })
             .reduce(function(a, b) {
-              let typeId = idFactory.makeTypeId(b.span, b.type)
+              let typeId = idFactory.makeTypeId(b.span, b.type, b.userId)
 
               let type = a.filter(function(type) {
                 return type.id === typeId

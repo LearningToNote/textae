@@ -15,7 +15,14 @@ import getTypeDom from './getTypeDom'
 export default function(domPositionCaChe, relationRenderer, buttonStateHelper, typeGap, editor, model, typeContainer) {
   let emitter = new EventEmitter(),
     gridRenderer = new GridRenderer(editor, domPositionCaChe),
-    renderEntityHandler = (entity) => getTypeDom(entity.span, entity.type).css(new TypeStyle(typeGap())),
+    renderEntityHandler = (entity) => {
+      let jQueryDomEl = getTypeDom(entity.span, entity.type, entity.userId)
+      if (entity.type.getCode() === "-1" || entity.type.getCode() === -1 || entity.type.getCode() === undefined) {
+        jQueryDomEl.find('.textae-editor__type-label').addClass("undefined_type")
+      } else {
+        jQueryDomEl.find('.textae-editor__type-label').removeClass("undefined_type")
+      }
+      jQueryDomEl.css(new TypeStyle(typeGap())) },
     entityRenderer = new EntityRenderer(editor, model, typeContainer, gridRenderer, renderEntityHandler),
     spanRenderer = new SpanRenderer(
       model.annotationData,
