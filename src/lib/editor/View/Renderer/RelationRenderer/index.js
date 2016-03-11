@@ -90,7 +90,13 @@ module.exports = function(editor, model, typeContainer) {
           return relation
         },
         createJsPlumbConnect = function(relation) {
-          var type = relation.type
+          var type = relation.type,
+              additionalCssClass = ''
+          if (type.getCode !== undefined) {
+            if (type.getCode() === "-1" || type.getCode() === -1 || type.getCode() === undefined) {
+              additionalCssClass = 'undefined_type'
+            }
+          }
           if (type.getLabel !== undefined) {
             type = type.getLabel()
           }
@@ -111,7 +117,7 @@ module.exports = function(editor, model, typeContainer) {
               ['Arrow', jsPlumbArrowOverlayUtil.NORMAL_ARROW],
               ['Label', _.extend({}, LABEL, {
                 label: '[' + relation.id + '] ' + type,
-                cssClass: LABEL.cssClass + ' ' + modification.getClasses(relation.id).join(' ')
+                cssClass: LABEL.cssClass + ' ' + additionalCssClass + ' ' + modification.getClasses(relation.id).join(' ')
               })]
             ]
           })
@@ -342,11 +348,18 @@ module.exports = function(editor, model, typeContainer) {
         }
         connect.setPaintStyle(strokeStyle)
 
-        var type = relation.type
+        var type = relation.type,
+            typeName = type
         if (type.getLabel !== undefined) {
-          type = type.getLabel()
+          typeName = type.getLabel()
         }
-        new LabelOverlay(connect).setLabel('[' + relation.id + '] ' + type)
+        var labelOverlay = new LabelOverlay(connect)
+        labelOverlay.setLabel('[' + relation.id + '] ' + typeName)
+        if (type.getCode() === "-1" || type.getCode() === -1 || type.getCode() === undefined) {
+          labelOverlay.addClass('undefined_type')
+        } else {
+          labelOverlay.removeClass('undefined_type')
+        }
       }
     },
     changeJsModification = function(relation) {
