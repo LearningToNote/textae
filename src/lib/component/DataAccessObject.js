@@ -44,6 +44,23 @@ module.exports = function(editor, confirmDiscardChangeMessage, userPreferences) 
       }, function() {
         cursorChanger.endWait()
       })
+    },
+    areDenotationsAndRelationsValid = function(data) {
+      let denotations = data['denotations'],
+          relations = data['relations']
+      for (var i = denotations.length - 1; i >= 0; i--) {
+        let denotation = denotations[i]
+        if (denotation['obj']['code'] === -1 || denotation['obj']['code'] === "-1" || denotation['obj']['code'] === undefined) {
+          return false
+        }
+      }
+      for (var i = relations.length - 1; i >= 0; i--) {
+        let relation = relations[i]
+        if (relation['pred']['code'] === -1 || relation['pred']['code'] === "-1" || relation['pred']['code'] === undefined) {
+          return false
+        }
+      }
+      return true
     }
   var dataSourceUrl = '',
     cursorChanger = new CursorChanger(editor),
@@ -124,6 +141,14 @@ module.exports = function(editor, confirmDiscardChangeMessage, userPreferences) 
         jsonObject = JSON.parse(jsonData),
         docName = jsonObject.sourceid
       jsonObject['task_id'] = task
+      let confirmationText = "The current document contains annotations or relations " +
+                              "that have no valid Type set (marked red). " +
+                              "Do you want to continue saving nonetheless?"
+      if (!areDenotationsAndRelationsValid(jsonObject)) {
+        if (!confirm(confirmationText)) {
+          return;
+        }
+      }
       jsonData = JSON.stringify(jsonObject)
       let url = 'https://' + window.location.hostname + ':8080/documents/' + docName
       cursorChanger.startWait()
