@@ -112,6 +112,25 @@ module.exports = function(editor, confirmDiscardChangeMessage, userPreferences) 
         toastr.error("Could not load the document :-(")
       })
     },
+    saveToHana = function(jsonData) {
+      var showSaveSuccess = function() {
+          api.emit('save')
+          cursorChanger.endWait()
+        },
+        showSaveError = function() {
+          api.emit('save error')
+          cursorChanger.endWait()
+        },
+        jsonObject = JSON.parse(jsonData),
+        docName = jsonObject.sourceid
+      jsonObject['task_id'] = task
+      jsonData = JSON.stringify(jsonObject)
+      let url = 'https://' + window.location.hostname + ':8080/documents/' + docName
+      cursorChanger.startWait()
+      ajaxAccessor.post(url, jsonData, showSaveSuccess, showSaveError, function() {
+        cursorChanger.endWait()
+      })
+    },
     filterUsersFromCachedData = function(currentState, filteredUsers) {
       cursorChanger.startWait()
       toastr.info('', 'Loading...', {timeOut: 0, extendedTimeOut: 0})
@@ -333,24 +352,6 @@ module.exports = function(editor, confirmDiscardChangeMessage, userPreferences) 
         },
         showSave: function(editorId, jsonData) {
           getSaveDialog(editorId).openAndSetParam(jsonData)
-        },
-        saveToHana: function(editorId, jsonData) {
-          var showSaveSuccess = function() {
-              api.emit('save')
-              cursorChanger.endWait()
-            },
-            showSaveError = function() {
-              api.emit('save error')
-              cursorChanger.endWait()
-            },
-            docName = JSON.parse(jsonData).sourceid
-          console.log("Saving document...")
-          console.log(jsonData)
-          let url = 'https://' + window.location.hostname + ':8080/documents/' + docName
-          cursorChanger.startWait()
-          ajaxAccessor.post(url, jsonData, showSaveSuccess, showSaveError, function() {
-            cursorChanger.endWait()
-          })
         }
       }
     }()
@@ -361,7 +362,7 @@ module.exports = function(editor, confirmDiscardChangeMessage, userPreferences) 
     filterUsersFromData: filterUsersFromCachedData,
     showAccess: _.partial(loadSaveDialog.showLoad, editor.editorId),
     showSave: _.partial(loadSaveDialog.showSave, editor.editorId),
-    saveToHana: _.partial(loadSaveDialog.saveToHana, editor.editorId),
+    saveToHana: saveToHana,
     loadRelationPrediction: loadRelationPrediction,
     loadEntityPrediction: loadEntityPrediction,
     setTask: setTask
