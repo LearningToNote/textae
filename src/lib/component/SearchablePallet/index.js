@@ -86,7 +86,9 @@ function setupOnClickEvents(typeContainer, $pallet) {
       }
     })
   $pallet.find('.textae-editor__type-pallet__entry')
-    .on('click', function() {
+    .on('click', function(event) {
+      event.stopPropagation()
+      event.preventDefault()
       var typeCode = $(this).children('input').attr('label')
       var type = typeContainer.getTypeForCode(typeCode)
       typeSelection.selectType(type)
