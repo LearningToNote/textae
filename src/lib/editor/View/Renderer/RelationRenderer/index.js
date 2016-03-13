@@ -7,6 +7,7 @@ import arrangePositionAll from './arrangePositionAll'
 import determineCurviness from './determineCurviness'
 import jsPlumbArrowOverlayUtil from './jsPlumbArrowOverlayUtil'
 import getEntityDom from '../../../getEntityDom'
+import getMousePoint from '../../../../tool/getMousePoint'
 
 var POINTUP_LINE_WIDTH = 3,
   LABEL = {
@@ -129,6 +130,20 @@ module.exports = function(editor, model, typeContainer) {
         },
         extendPointup = function() {
           var Pointupable = function() {
+            let tooltip = $('<div class="textae-editor__relation__tooltip"></div>')
+            var shouldShowTooltip = false,
+                hideTooltipIntelligently = function() {
+                  if (!shouldShowTooltip) {
+                    tooltip.fadeOut()
+                  }
+                },
+                animateInTooltip
+            tooltip.mouseenter(() => shouldShowTooltip = true)
+            tooltip.mouseleave(() => {
+              shouldShowTooltip = false
+              setTimeout(hideTooltipIntelligently, 1000)
+            })
+            $('body').append(tooltip)
             var hoverupLabel = function(connect) {
                 new LabelOverlay(connect).addClass('hover')
                 return connect
@@ -147,10 +162,32 @@ module.exports = function(editor, model, typeContainer) {
               },
               hoverupLine = function(connect) {
                 connect.addClass('hover')
+                shouldShowTooltip = true
+                if (animateInTooltip !== undefined) {
+                  clearTimeout(animateInTooltip)
+                }
+                animateInTooltip = setTimeout(() => {
+                  if (shouldShowTooltip) {
+                    let type = model.annotationData.relation.get(connect.relationId).type
+                    tooltip.empty()
+                    tooltip.css('top', getMousePoint().top + 'px')
+                    if (getMousePoint().left + tooltip.width() < $(document).width()) {
+                      tooltip.css('left', getMousePoint().left + 'px')
+                      tooltip.css('right', '')
+                    } else {
+                      tooltip.css('right', getMousePoint().left + 'px')
+                      tooltip.css('left', '')
+                    }
+                    tooltip.append(type.getLabel())
+                    tooltip.fadeIn()
+                  }
+                }, 1000)
                 return connect
               },
               hoverdownLine = function(connect) {
                 connect.removeClass('hover')
+                shouldShowTooltip = false
+                setTimeout(hideTooltipIntelligently, 1000)
                 return connect
               },
               selectLine = function(connect) {
