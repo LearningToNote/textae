@@ -54,7 +54,7 @@ module.exports = function(editor, model, typeContainer) {
           colorHex = typeContainer.relation.getColor(type)
 
         return {
-          lineWidth: 1,
+          lineWidth: 2,
           strokeStyle: converseHEXinotRGBA(colorHex, 1)
         }
       }
