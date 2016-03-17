@@ -11,8 +11,8 @@ var getDetectBoundaryFunc = function(modeAccordingToButton, spanConfig) {
     let entities = annotationData.span.get(spanId).getEntities()
     for (var i = entities.length - 1; i >= 0; i--) {
       let currentEntity = annotationData.entity.get(entities[i])
-      console.log("Checking currentEntity", currentEntity, currentEntity.type)
-      if (currentEntity.userId === 0 && types.indexOf(currentEntity.type) === -1) {
+      console.log("Checking currentEntity", currentEntity, currentEntity.type, currentEntity.type.getCode())
+      if ((currentEntity.userId === 0 || currentEntity.userId === undefined) && types.indexOf(currentEntity.type) === -1) {
         types.push(currentEntity.type)
       }
     }
