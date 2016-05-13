@@ -117,7 +117,7 @@ module.exports = function(editor, model, typeContainer) {
             overlays: [
               ['Arrow', jsPlumbArrowOverlayUtil.NORMAL_ARROW],
               ['Label', _.extend({}, LABEL, {
-                label: '[' + relation.id + '] ' + type,
+                label: type,
                 cssClass: LABEL.cssClass + ' ' + additionalCssClass + ' ' + modification.getClasses(relation.id).join(' ')
               })]
             ]
