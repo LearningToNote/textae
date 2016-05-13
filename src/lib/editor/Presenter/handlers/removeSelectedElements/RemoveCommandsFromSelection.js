@@ -11,11 +11,11 @@ function getAll(command, spanIds, entityIds, relationIds) {
     .concat(
       toRemoveRelationCommands(relationIds, command),
       toRemoveEntityCommands(entityIds, command),
-      toRomeveSpanCommands(spanIds, command)
+      toRemoveSpanCommands(spanIds, command)
     )
 }
 
-function toRomeveSpanCommands(spanIds, command) {
+function toRemoveSpanCommands(spanIds, command) {
   return spanIds.map(command.factory.spanRemoveCommand)
 }
 
