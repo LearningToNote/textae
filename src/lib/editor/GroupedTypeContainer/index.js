@@ -1,8 +1,7 @@
-import reduce2hash from '../../util/reduce2hash'
 import uri from '../uri'
 import EntityType from './EntityType.js'
 
-var DEFAULT_TYPE = EntityType({"name": "undefined", "code": "-1", "groupID": "-1", "group": "No Group"}),
+var DEFAULT_TYPE = EntityType({"id": -1, "name": "undefined", "code": "-1", "groupID": "-1", "group": "No Group"}),
   TypeContainer = function(getActualTypesFunction, defaultColor) {
     var definedTypes = {},
       defaultType = DEFAULT_TYPE
@@ -21,14 +20,9 @@ var DEFAULT_TYPE = EntityType({"name": "undefined", "code": "-1", "groupID": "-1
         return defaultType || this.getSortedNames()[0]
       },
       getColor: function(code) {
-        // console.log("trying to get the color of " + code)
-        // console.log(definedTypes)
-        // console.log(definedTypes[code])
         return definedTypes[code] && definedTypes[code].color || defaultColor
       },
       getUri: function(code) {
-        // console.log("trying to get the uri of " + code)
-        // console.log(code)
         return definedTypes[code] && definedTypes[code].uri ||
           uri.getUrlMatches(code) ? code : undefined
       },
@@ -58,7 +52,7 @@ var DEFAULT_TYPE = EntityType({"name": "undefined", "code": "-1", "groupID": "-1
           console.log("definedTypes:")
           console.log(definedTypes)
 
-          return typeNames.map(function(code) { if (code === "-1") { return DEFAULT_TYPE } else { return definedTypes[code] }})
+          return typeNames.map((id) => id === "-1" ? DEFAULT_TYPE : definedTypes[id])
         } else {
           return []
         }
@@ -80,16 +74,14 @@ var DEFAULT_TYPE = EntityType({"name": "undefined", "code": "-1", "groupID": "-1
   }
 
 function createCodeMapping(entities) {
-  return entities.reduce(function(obj, element) {
-    obj[element.getCode()] = element
-    return obj
-  }, {})
+  var result = {}
+  entities.forEach((element) => result[element.getId()] = element)
+  return result
 }
 
 module.exports = function(model) {
   var entityContainer = _.extend(new TypeContainer(model.annotationData.entity.types, '#197278'), {
       isBlock: function(type) {
-        // console.log(type, entityContainer.getDeinedTypes(), entityContainer.getDeinedTypes()[type]);
         var definition = entityContainer.getDeinedTypes()[type]
         return definition && definition.type && definition.type === 'block'
       }

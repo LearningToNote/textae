@@ -18,8 +18,8 @@ module.exports = {
   // But types are inputed by users and may have `!"#$%&'()*+,./:;<=>?@[\]^`{|}~` which can not be used for css selecor.
   makeTypeId: function(spanId, type, userId) {
     userId = userId || 0
-    if (type.getCode !== undefined) {
-      type = type.getCode()
+    if (type.getId !== undefined) {
+      type = type.getId()
     }
     typeCounter[userId] = typeCounter[userId] || []
     let user_count = typeCounter[userId]

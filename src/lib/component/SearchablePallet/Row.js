@@ -52,7 +52,7 @@ export default function(typeContainer, filterText, selectedType) {
       groupDict["entries"] = group.map(type => {
           return {
             typeName: type.getName(),
-            typeCode: type.getCode(),
+            typeCode: type.getId(),
             isSelected: selectedType !== undefined && type.getName() === selectedType.getName(),
             uri: typeContainer.getUri(type),
             color: typeContainer.getColor(type)

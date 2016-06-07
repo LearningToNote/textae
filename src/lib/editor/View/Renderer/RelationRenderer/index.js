@@ -93,8 +93,8 @@ module.exports = function(editor, model, typeContainer) {
         createJsPlumbConnect = function(relation) {
           var type = relation.type,
               additionalCssClass = ''
-          if (type.getCode !== undefined) {
-            if (type.getCode() === "-1" || type.getCode() === -1 || type.getCode() === undefined) {
+          if (type.getId !== undefined) {
+            if (type.getId() === "-1" || type.getId() === -1 || type.getId() === undefined) {
               additionalCssClass = 'undefined_type'
             }
           }
@@ -392,7 +392,7 @@ module.exports = function(editor, model, typeContainer) {
         }
         var labelOverlay = new LabelOverlay(connect)
         labelOverlay.setLabel('[' + relation.id + '] ' + typeName)
-        if (type.getCode() === "-1" || type.getCode() === -1 || type.getCode() === undefined) {
+        if (type.getId() === "-1" || type.getId() === -1 || type.getId() === undefined) {
           labelOverlay.addClass('undefined_type')
         } else {
           labelOverlay.removeClass('undefined_type')

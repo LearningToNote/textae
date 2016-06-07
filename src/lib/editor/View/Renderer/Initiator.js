@@ -17,7 +17,7 @@ export default function(domPositionCaChe, relationRenderer, buttonStateHelper, t
     gridRenderer = new GridRenderer(editor, domPositionCaChe),
     renderEntityHandler = (entity) => {
       let jQueryDomEl = getTypeDom(entity.span, entity.type, entity.userId)
-      if (entity.type.getCode() === "-1" || entity.type.getCode() === -1 || entity.type.getCode() === undefined) {
+      if (entity.type.getId() === "-1" || entity.type.getId() === -1 || entity.type.getId() === undefined) {
         jQueryDomEl.find('.textae-editor__type-label').addClass("undefined_type")
       } else {
         jQueryDomEl.find('.textae-editor__type-label').removeClass("undefined_type")

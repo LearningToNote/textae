@@ -18,7 +18,7 @@ module.exports = function(command, selectionModel, annotationData) {
                 currentEntity = annotationData.entity.get(currentId)
             if (currentId !== comparisonEntityId &&
                 (currentEntity.userId === 0 || currentEntity.userId === undefined) &&
-                currentEntity.type.getCode() === comparisonEntity.type.getCode() &&
+                currentEntity.type.getId() === comparisonEntity.type.getId() &&
                 currentEntity.type.getLabel() === comparisonEntity.type.getLabel()) {
                 result.push(currentId)
             }
@@ -84,7 +84,7 @@ module.exports = function(command, selectionModel, annotationData) {
                 for (var i = objRelationIds.length - 1; i >= 0; i--) {
                     let currentObjRelation = annotationData.relation.get(objRelationIds[i])
                     if (subjCandidates.indexOf(currentObjRelation.subj) > -1) {
-                        if (currentObjRelation.type.getCode() === currentRelation.type.getCode()
+                        if (currentObjRelation.type.getId() === currentRelation.type.getId()
                             && currentObjRelation.type.getLabel() === currentRelation.type.getLabel()) {
                             shouldCreate = false
                             break
