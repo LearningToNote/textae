@@ -145,7 +145,7 @@ module.exports = function(grunt) {
                 options: {
                     stdout: true
                 },
-                command: 'python server/server.py ../dist NoDebug'
+                command: 'python server/server.py ../../dist NoDebug'
             }
         },
         connect: {
